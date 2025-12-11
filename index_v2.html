@@ -1,0 +1,1149 @@
+<!-- filename: gift_dashboard_h2o_branded.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday Gift Recommendations Dashboard - H2O.ai</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #161616 0%, #54585A 50%, #161616 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Snowflake animation */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 1;
+            color: rgba(255, 230, 0, 0.4);
+            font-size: 1em;
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header Section - H2O.ai Branding */
+        .header {
+            background: linear-gradient(135deg, #FEC925 0%, #FFE600 100%);
+            color: #161616;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 3px solid #FFE600;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .header .company-badge {
+            display: inline-block;
+            background: #161616;
+            color: #FFE600;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            border: 2px solid #161616;
+            font-weight: 600;
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .summary-card {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .summary-card .label {
+            font-size: 0.9em;
+            color: #54585A;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #161616;
+        }
+
+        .compliance-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #E8E5E1;
+            color: #161616;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            border: 2px solid #FEC925;
+        }
+
+        /* Filter Controls */
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .controls label {
+            font-weight: 600;
+            color: #161616;
+        }
+
+        .controls select, .controls button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid #D3D3D1;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .controls select:hover, .controls button:hover {
+            border-color: #FEC925;
+            transform: translateY(-2px);
+        }
+
+        .controls button {
+            background: #161616;
+            color: #FFE600;
+            border: none;
+            font-weight: 600;
+        }
+
+        .controls button:hover {
+            background: #54585A;
+        }
+
+        /* Recipient Cards Grid */
+        .recipients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .recipient-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid #FEC925;
+        }
+
+        .recipient-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(254, 201, 37, 0.3);
+        }
+
+        .recipient-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #E8E5E1;
+        }
+
+        .recipient-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #161616;
+            margin-bottom: 8px;
+        }
+
+        .recipient-interests {
+            color: #54585A;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .budget-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .budget-range {
+            font-weight: 600;
+            color: #FEC925;
+        }
+
+        /* Budget Tracker */
+        .budget-tracker {
+            margin: 20px 0;
+        }
+
+        .budget-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            color: #54585A;
+        }
+
+        .progress-bar {
+            height: 25px;
+            background: #E8E5E1;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FEC925 0%, #FFE600 100%);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #161616;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .progress-fill.over-budget {
+            background: linear-gradient(90deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        /* Gift Cards */
+        .gifts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .gift-card {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid #D3D3D1;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gift-card:hover {
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .gift-card.selected {
+            background: #fff;
+            border-left: 5px solid #FFE600;
+            box-shadow: 0 5px 20px rgba(255, 230, 0, 0.3);
+        }
+
+        .gift-card.expanded {
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .selection-radio {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #FEC925;
+        }
+
+        .gift-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+            padding-right: 40px;
+        }
+
+        .gift-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #161616;
+            flex: 1;
+        }
+
+        .gift-price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #FEC925;
+            margin-left: 15px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #161616 0%, #54585A 100%);
+            color: #FFE600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .gift-reason {
+            color: #54585A;
+            line-height: 1.6;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .gift-card.expanded .gift-reason {
+            display: block;
+        }
+
+        .policy-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #E8E5E1;
+            border-radius: 8px;
+            font-size: 0.85em;
+            color: #161616;
+            font-weight: 600;
+        }
+
+        .expand-icon {
+            font-size: 0.8em;
+            color: #9F9F9D;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Email Button */
+        .email-button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .send-email-btn {
+            background: linear-gradient(135deg, #FEC925 0%, #FFE600 100%);
+            color: #161616;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(254, 201, 37, 0.4);
+        }
+
+        .send-email-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(254, 201, 37, 0.6);
+        }
+
+        .send-email-btn:disabled {
+            background: #D3D3D1;
+            color: #9F9F9D;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 22, 22, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.3s ease;
+            border-top: 5px solid #FEC925;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #E8E5E1;
+        }
+
+        .modal-header h2 {
+            color: #161616;
+            font-size: 1.8em;
+        }
+
+        .close-btn {
+            font-size: 2em;
+            color: #9F9F9D;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #FEC925;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #161616;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #D3D3D1;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #FEC925;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .selected-gifts-summary {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #FFE600;
+        }
+
+        .selected-gifts-summary h3 {
+            color: #161616;
+            margin-bottom: 15px;
+        }
+
+        .selected-gift-item {
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #FEC925;
+        }
+
+        .selected-gift-item strong {
+            color: #FEC925;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #FEC925 0%, #FFE600 100%);
+            color: #161616;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(254, 201, 37, 0.4);
+        }
+
+        .btn-cancel {
+            background: #54585A;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #161616;
+        }
+
+        .selection-indicator {
+            display: inline-block;
+            background: #FFE600;
+            color: #161616;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .gmail-note {
+            background: #E8E5E1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #54585A;
+            border-left: 4px solid #FEC925;
+        }
+
+        .gmail-note strong {
+            color: #161616;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+            .controls, .snowflake, .send-email-btn, .selection-radio {
+                display: none;
+            }
+            .recipient-card {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .recipients-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-section {
+                flex-direction: column;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controls select, .controls button {
+                width: 100%;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .recipient-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .recipient-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .recipient-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .recipient-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Snowflakes -->
+    <div id="snowflakes"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎁 Holiday Gift Recommendations Dashboard</h1>
+            <div class="subtitle">Policy-Compliant Gift Guide</div>
+            <div class="company-badge">H2O.ai | DIAB Engineering Policy Compliant</div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <div class="summary-card">
+                <div class="label">Total Recipients</div>
+                <div class="value" id="totalRecipients">3</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Selected Budget</div>
+                <div class="value" id="selectedBudget">$0.00</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Gifts Selected</div>
+                <div class="value" id="giftsSelected">0/3</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Policy Status</div>
+                <div class="compliance-badge">
+                    <span>✅</span>
+                    <span>All Compliant</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="controls">
+            <label for="categoryFilter">Filter by Category:</label>
+            <select id="categoryFilter">
+                <option value="all">All Categories</option>
+                <option value="Tech Accessories">Tech Accessories</option>
+                <option value="Tech Gadgets">Tech Gadgets</option>
+                <option value="Smart Home Tech">Smart Home Tech</option>
+                <option value="Gourmet Food & Beverage">Gourmet Food & Beverage</option>
+                <option value="Professional Accessories">Professional Accessories</option>
+                <option value="Cooking Supplies">Cooking Supplies</option>
+                <option value="Art Supplies">Art Supplies</option>
+                <option value="Cookware">Cookware</option>
+            </select>
+
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy">
+                <option value="default">Default Order</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+            </select>
+
+            <button onclick="window.print()">🖨️ Print Dashboard</button>
+            <button onclick="resetFilters()">🔄 Reset Filters</button>
+        </div>
+
+        <!-- Recipients Grid -->
+        <div class="recipients-grid" id="recipientsGrid">
+            <!-- Cards will be generated by JavaScript -->
+        </div>
+
+        <!-- Send Email Button -->
+        <div class="email-button-container">
+            <button class="send-email-btn" id="sendEmailBtn" onclick="openEmailModal()" disabled>
+                📧 Send Gift Notifications via Gmail
+            </button>
+            <p style="color: #FFE600; margin-top: 10px; font-size: 0.9em; font-weight: 600;">
+                Select one gift for each recipient to enable Gmail notifications
+            </p>
+        </div>
+    </div>
+
+    <!-- Email Modal -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎁 Send Gift Notifications</h2>
+                <button class="close-btn" onclick="closeEmailModal()">&times;</button>
+            </div>
+
+            <div class="selected-gifts-summary" id="selectedGiftsSummary">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <form id="emailForm" onsubmit="sendGmailEmails(event)">
+                <div id="emailFormFields">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <div class="gmail-note">
+                    <strong>📧 Gmail Integration:</strong> Clicking "Send via Gmail" will open Gmail in new tabs with pre-filled messages for each recipient. You can review and send each email directly from Gmail.
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeEmailModal()">Cancel</button>
+                    <button type="submit" class="btn-send">📧 Send via Gmail</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Gift Data
+        const giftData = {
+            "policy_info": {
+                "policy_name": "Anti-Bribery and Corruption Policy",
+                "policy_number": "MGT-POL-001-009 Rev06",
+                "limit": "AUD $300 per person",
+                "company": "DIAB Engineering"
+            },
+            "recipients": [
+                {
+                    "id": 1,
+                    "name": "Colleague - Tech Enthusiast",
+                    "interests": "Tech gadgets, innovation, productivity tools",
+                    "budget_min": 40,
+                    "budget_max": 70,
+                    "gifts": [
+                        {
+                            "gift_name": "Anker PowerCore Portable Charger (20,000mAh)",
+                            "price": 45.99,
+                            "category": "Tech Accessories",
+                            "reason": "Practical tech gadget for colleague who travels or works remotely. High-capacity portable charger is useful for work purposes and demonstrates thoughtfulness without being overly personal.",
+                            "policy_alignment": "✅ COMPLIANT - Under $300 AUD limit, occasional gift, modest value, business-appropriate, does not create perception of improper influence"
+                        },
+                        {
+                            "gift_name": "Tile Pro Bluetooth Tracker (4-pack)",
+                            "price": 69.99,
+                            "category": "Tech Gadgets",
+                            "reason": "Useful tech accessory for tracking keys, wallet, laptop bag, and other work equipment. Shows thoughtfulness for colleague's daily convenience while remaining professional.",
+                            "policy_alignment": "✅ COMPLIANT - Under $300 AUD limit, modest value, appropriate for colleague relationship"
+                        },
+                        {
+                            "gift_name": "Amazon Echo Dot (5th Gen) with Smart Bulb",
+                            "price": 54.99,
+                            "category": "Smart Home Tech",
+                            "reason": "Popular smart home device that appeals to tech enthusiasts. Includes smart bulb for added value. Appropriate holiday gift that doesn't create ongoing obligation.",
+                            "policy_alignment": "✅ COMPLIANT - Under $300 AUD limit, occasional holiday gift, modest value"
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "name": "Senior Client - Executive",
+                    "interests": "Professional excellence, quality, thoughtful gestures",
+                    "budget_min": 80,
+                    "budget_max": 120,
+                    "gifts": [
+                        {
+                            "gift_name": "Premium Coffee Gift Set (Starbucks Reserve Collection)",
+                            "price": 95.00,
+                            "category": "Gourmet Food & Beverage",
+                            "reason": "Consumable gift that can be shared with client's team. Professional, temporary, and doesn't create ongoing obligation. Appropriate for holiday season and demonstrates thoughtfulness without being overly lavish.",
+                            "policy_alignment": "✅ COMPLIANT - Under $300 AUD limit, consumable/temporary nature reduces perception of improper influence, can be shared with team"
+                        },
+                        {
+                            "gift_name": "Corporate Gift Basket (Gourmet Foods & Treats)",
+                            "price": 89.99,
+                            "category": "Gourmet Food & Beverage",
+                            "reason": "Traditional business gift suitable for senior executives. Consumable items reduce perception of obligation. Can be shared with client's office, making it a team gift rather than personal.",
+                            "policy_alignment": "✅ COMPLIANT - Under $300 AUD limit, consumable items, traditional business gift, modest value for client relationship"
+                        },
+                        {
+                            "gift_name": "Premium Desk Accessory Set (Leather Organizer)",
+                            "price": 79.99,
+                            "category": "Professional Accessories",
+                            "reason": "Professional desk accessory for office use. Practical and business-appropriate without being overly personal. High-quality leather construction suitable for executive environment.",
+                            "policy_alignment": "✅ COMPLIANT - Under $300 AUD limit (use caution: durable good, consider consumable alternatives)"
+                        }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "name": "New Team Member - Creative",
+                    "interests": "Cooking, creative hobbies, work-life balance",
+                    "budget_min": 25,
+                    "budget_max": 50,
+                    "gifts": [
+                        {
+                            "gift_name": "Premium Spice Gift Set (12 Gourmet Spices)",
+                            "price": 34.99,
+                            "category": "Cooking Supplies",
+                            "reason": "Thoughtful welcome gift for new team member who enjoys cooking. Shows you paid attention to their interests while remaining professional. Consumable nature makes it appropriate.",
+                            "policy_alignment": "✅ FULLY COMPLIANT - Well under $300 AUD limit, modest value, appropriate welcome gift, occasional (onboarding)"
+                        },
+                        {
+                            "gift_name": "Arteza Watercolor Paint Set (60 colors)",
+                            "price": 42.99,
+                            "category": "Art Supplies",
+                            "reason": "High-quality art supplies for creative hobbies. Encourages work-life balance and shows company values employee wellbeing and personal development.",
+                            "policy_alignment": "✅ FULLY COMPLIANT - Modest value, appropriate for welcoming new team member, supports employee engagement"
+                        },
+                        {
+                            "gift_name": "Cast Iron Skillet with Recipe Book",
+                            "price": 49.99,
+                            "category": "Cookware",
+                            "reason": "Durable, practical gift for cooking enthusiast. Includes recipe book for added value and thoughtfulness. Shows genuine interest in employee's hobbies.",
+                            "policy_alignment": "✅ FULLY COMPLIANT - Under $300 AUD limit, modest value for welcome gift, appropriate for team member relationship"
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Track selected gifts
+        let selectedGifts = {};
+
+        // Generate snowflakes
+        function createSnowflakes() {
+            const snowflakesContainer = document.getElementById('snowflakes');
+            const snowflakeCount = 30;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 1 + 0.5) + 'em';
+                snowflakesContainer.appendChild(snowflake);
+            }
+        }
+
+        // Render recipient cards
+        function renderRecipients(data = giftData.recipients) {
+            const grid = document.getElementById('recipientsGrid');
+            grid.innerHTML = '';
+
+            data.forEach(recipient => {
+                const selectedGift = selectedGifts[recipient.id];
+                const budgetUsed = selectedGift ? selectedGift.price : 0;
+                const budgetPercentage = ((budgetUsed / recipient.budget_max) * 100).toFixed(1);
+                const isOverBudget = budgetUsed > recipient.budget_max;
+
+                const card = document.createElement('div');
+                card.className = 'recipient-card';
+                card.innerHTML = `
+                    <div class="recipient-header">
+                        <div class="recipient-name">${recipient.name}</div>
+                        <div class="recipient-interests">💡 ${recipient.interests}</div>
+                        <div class="budget-info">
+                            <span class="budget-range">Budget: $${recipient.budget_min} - $${recipient.budget_max}</span>
+                        </div>
+                    </div>
+
+                    <div class="budget-tracker">
+                        <div class="budget-label">
+                            <span>Budget Used</span>
+                            <span><strong>$${budgetUsed.toFixed(2)}</strong> / $${recipient.budget_max}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${isOverBudget ? 'over-budget' : ''}" 
+                                 style="width: ${Math.min(budgetPercentage, 100)}%">
+                                ${budgetPercentage}%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gifts-container">
+                        ${recipient.gifts.map((gift, index) => {
+                            const isSelected = selectedGift && selectedGift.gift_name === gift.gift_name;
+                            return `
+                            <div class="gift-card ${isSelected ? 'selected' : ''}" onclick="toggleGiftDetails(this, event)">
+                                <input type="radio" 
+                                       name="gift-${recipient.id}" 
+                                       class="selection-radio" 
+                                       value="${index}"
+                                       ${isSelected ? 'checked' : ''}
+                                       onclick="selectGift(${recipient.id}, ${index}, event)">
+                                <div class="gift-header">
+                                    <div class="gift-name">${gift.gift_name}</div>
+                                    <div class="gift-price">$${gift.price.toFixed(2)}</div>
+                                </div>
+                                <div class="category-badge">${gift.category}</div>
+                                ${isSelected ? '<div class="selection-indicator">✓ Selected</div>' : ''}
+                                <div class="gift-reason">${gift.reason}</div>
+                                <div class="policy-indicator">
+                                    <span>✅</span>
+                                    <span>${gift.policy_alignment.replace('✅ ', '')}</span>
+                                </div>
+                                <div class="expand-icon">▼ Click to expand details</div>
+                            </div>
+                        `}).join('')}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            updateSummary();
+        }
+
+        // Select gift
+        function selectGift(recipientId, giftIndex, event) {
+            event.stopPropagation();
+            
+            const recipient = giftData.recipients.find(r => r.id === recipientId);
+            const gift = recipient.gifts[giftIndex];
+            
+            selectedGifts[recipientId] = {
+                ...gift,
+                recipientName: recipient.name,
+                recipientId: recipientId
+            };
+            
+            renderRecipients();
+            updateSummary();
+        }
+
+        // Toggle gift details
+        function toggleGiftDetails(element, event) {
+            if (event.target.classList.contains('selection-radio')) {
+                return;
+            }
+            
+            element.classList.toggle('expanded');
+            const icon = element.querySelector('.expand-icon');
+            if (element.classList.contains('expanded')) {
+                icon.textContent = '▲ Click to collapse';
+            } else {
+                icon.textContent = '▼ Click to expand details';
+            }
+        }
+
+        // Update summary
+        function updateSummary() {
+            const selectedCount = Object.keys(selectedGifts).length;
+            const totalSelected = Object.values(selectedGifts).reduce((sum, gift) => sum + gift.price, 0);
+            
+            document.getElementById('giftsSelected').textContent = `${selectedCount}/3`;
+            document.getElementById('selectedBudget').textContent = `$${totalSelected.toFixed(2)}`;
+            
+            const emailBtn = document.getElementById('sendEmailBtn');
+            emailBtn.disabled = selectedCount !== 3;
+        }
+
+        // Open email modal
+        function openEmailModal() {
+            const modal = document.getElementById('emailModal');
+            modal.classList.add('show');
+            
+            const summaryDiv = document.getElementById('selectedGiftsSummary');
+            summaryDiv.innerHTML = '<h3>Selected Gifts:</h3>';
+            
+            Object.values(selectedGifts).forEach(gift => {
+                summaryDiv.innerHTML += `
+                    <div class="selected-gift-item">
+                        <strong>${gift.recipientName}</strong><br>
+                        ${gift.gift_name} - <strong>$${gift.price.toFixed(2)}</strong>
+                    </div>
+                `;
+            });
+            
+            const formFields = document.getElementById('emailFormFields');
+            formFields.innerHTML = '';
+            
+            Object.values(selectedGifts).forEach(gift => {
+                formFields.innerHTML += `
+                    <div class="form-group">
+                        <label>Recipient Name for ${gift.recipientName}:</label>
+                        <input type="text" 
+                               id="name-${gift.recipientId}" 
+                               placeholder="Enter recipient's full name" 
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gmail Address for ${gift.recipientName}:</label>
+                        <input type="email" 
+                               id="email-${gift.recipientId}" 
+                               placeholder="recipient@gmail.com or recipient@company.com" 
+                               required>
+                    </div>
+                    <hr style="margin: 20px 0; border: none; border-top: 1px solid #E8E5E1;">
+                `;
+            });
+        }
+
+        // Close email modal
+        function closeEmailModal() {
+            const modal = document.getElementById('emailModal');
+            modal.classList.remove('show');
+        }
+
+        // Send Gmail emails
+        function sendGmailEmails(event) {
+            event.preventDefault();
+            
+            let emailsOpened = 0;
+            
+            Object.values(selectedGifts).forEach(gift => {
+                const recipientName = document.getElementById(`name-${gift.recipientId}`).value;
+                const recipientEmail = document.getElementById(`email-${gift.recipientId}`).value;
+                
+                const subject = '🎁 Happy Holidays - Your Gift from H2O.ai!';
+                const body = `Dear ${recipientName},
+
+Happy Holidays! 🎁
+
+We are delighted to share a special gift with you this holiday season. We have selected the following gift for you:
+
+Gift: ${gift.gift_name}
+Value: $${gift.price.toFixed(2)}
+Category: ${gift.category}
+
+${gift.reason}
+
+This gift has been selected in accordance with our company's gift policy and represents our appreciation for you.
+
+We hope you enjoy this thoughtful gift and wish you a wonderful holiday season!
+
+Warm regards,
+H2O.ai Team
+
+---
+This gift complies with DIAB Engineering's Anti-Bribery and Corruption Policy (MGT-POL-001-009 Rev06).
+`;
+                
+                // Gmail compose URL
+                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipientEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                
+                // Open Gmail in new tab
+                window.open(gmailUrl, '_blank');
+                emailsOpened++;
+            });
+            
+            alert(`✅ ${emailsOpened} Gmail compose windows have been opened!\n\nEach email is pre-filled and ready to send. Please review and click "Send" in each Gmail tab.`);
+            closeEmailModal();
+        }
+
+        // Filter and sort functions
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortBy').addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+
+            let filteredData = JSON.parse(JSON.stringify(giftData.recipients));
+
+            if (category !== 'all') {
+                filteredData = filteredData.map(recipient => ({
+                    ...recipient,
+                    gifts: recipient.gifts.filter(gift => gift.category === category)
+                })).filter(recipient => recipient.gifts.length > 0);
+            }
+
+            if (sortBy === 'price-low') {
+                filteredData.forEach(recipient => {
+                    recipient.gifts.sort((a, b) => a.price - b.price);
+                });
+            } else if (sortBy === 'price-high') {
+                filteredData.forEach(recipient => {
+                    recipient.gifts.sort((a, b) => b.price - a.price);
+                });
+            }
+
+            renderRecipients(filteredData);
+        }
+
+        function resetFilters() {
+            document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('sortBy').value = 'default';
+            renderRecipients();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('emailModal');
+            if (event.target === modal) {
+                closeEmailModal();
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            createSnowflakes();
+            renderRecipients();
+            updateSummary();
+        };
+    </script>
+</body>
+</html>
