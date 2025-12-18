@@ -1,155 +1,464 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Holiday Gift Agent Dashboard – Versions</title>
+
   <style>
-    :root {
-      --primary: #007bff;
-      --primary-hover: #0056b3;
-      --secondary: #6f42c1;
-      --shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
-      --border-radius: 12px;
+    :root{
+      --bg: #0b0f19;
+      --card: rgba(255,255,255,0.06);
+      --card-2: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.14);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --shadow: 0 18px 45px rgba(0,0,0,0.35);
+
+      --accent: #ffd200;      /* H2O.ai-ish accent */
+      --accent-2: #00d3ff;    /* secondary accent */
+      --btn: rgba(255,255,255,0.10);
+      --btn-hover: rgba(255,255,255,0.16);
+      --focus: rgba(255,210,0,0.55);
     }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #333;
+
+    * { box-sizing: border-box; }
+
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(255,210,0,0.18), transparent 55%),
+        radial-gradient(800px 450px at 85% 15%, rgba(0,211,255,0.16), transparent 55%),
+        radial-gradient(900px 600px at 50% 90%, rgba(255,255,255,0.06), transparent 60%),
+        var(--bg);
       min-height: 100vh;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 48px 20px 70px;
+    }
+
+    .topbar{
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin: 0;
-      padding: 20px;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 26px;
+      flex-wrap: wrap;
     }
-    
-    .container {
-      background: white;
-      max-width: 500px;
-      width: 100%;
-      padding: 40px;
-      border-radius: var(--border-radius);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transform: translateY(0);
-      transition: transform 0.3s ease;
+
+    .badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      font-size: 13px;
+      color: var(--muted);
+      user-select: none;
     }
-    
-    .container:hover {
-      transform: translateY(-5px);
+
+    .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(255,210,0,0.15);
     }
-    
-    h1 {
-      font-size: 28px;
-      margin-bottom: 40px;
-      color: #2c3e50;
-      position: relative;
-    }
-    
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-    }
-    
-    .version-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    a {
-      display: block;
-      padding: 18px 25px;
-      background: var(--primary);
-      color: white;
-      text-decoration: none;
-      border-radius: var(--border-radius);
-      font-size: 18px;
-      font-weight: 600;
-      transition: all 0.3s ease;
+
+    .hero{
+      padding: 26px 22px 22px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
       box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    h1{
+      margin: 0;
+      font-size: clamp(26px, 3.2vw, 38px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle{
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.55;
+      max-width: 72ch;
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 720px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
       position: relative;
+      padding: 16px 16px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.26);
       overflow: hidden;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
     }
-    
-    a::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
+
+    .card:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .card h2{
+      margin: 0 0 6px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .pill .mini-dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 5px rgba(0,211,255,0.12);
+    }
+
+    .card p{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .btn{
+      display: inline-flex;
       width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: var(--btn);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      outline: none;
+      cursor: pointer;
     }
-    
-    a:hover::before {
-      left: 100%;
+
+    .btn:hover{
+      background: var(--btn-hover);
+      border-color: rgba(255,255,255,0.26);
+      transform: translateY(-1px);
     }
-    
-    a:hover {
-      background: var(--primary-hover);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+
+    .btn:focus-visible{
+      box-shadow: 0 0 0 4px var(--focus);
     }
-    
-    a:nth-child(2) {
-      background: var(--secondary);
+
+    .arrow{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 16px;
     }
-    
-    a:nth-child(2):hover {
-      background: #5a32a3;
-      box-shadow: 0 8px 25px rgba(111, 66, 193, 0.3);
+
+    .meta{
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
-    
-    .version-info {
-      font-size: 14px;
-      color: #666;
-      margin-top: 30px;
-      padding: 15px;
-      background: #f8f9fa;
+
+    @media (max-width: 720px){
+      .meta{ grid-template-columns: 1fr; }
+    }
+
+    .meta a{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      transition: background .16s ease, border-color .16s ease, transform .16s ease;
+    }
+
+    .meta a:hover{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.22);
+      transform: translateY(-1px);
+      color: var(--text);
+    }
+
+    .section{
+      margin-top: 22px;
+      padding: 18px 18px 14px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.045);
+      box-shadow: 0 14px 38px rgba(0,0,0,0.22);
+      backdrop-filter: blur(12px);
+    }
+
+    .section-head{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .section h3{
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .small{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .slides-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .link-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+    }
+
+    .link-btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.24);
+    }
+
+    .iframe-wrap{
+      margin-top: 12px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.15);
+    }
+
+    iframe{
+      display: block;
+      width: 100%;
+      height: 860px;
+      border: 0;
+    }
+
+    @media (max-width: 720px){
+      iframe{ height: 620px; }
+    }
+
+    .footer{
+      margin-top: 18px;
+      color: rgba(255,255,255,0.62);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      padding: 2px 7px;
       border-radius: 8px;
-      border-left: 4px solid var(--primary);
-    }
-    
-    @media (max-width: 600px) {
-      .container {
-        margin: 20px;
-        padding: 30px 20px;
-      }
-      
-      h1 {
-        font-size: 24px;
-      }
-      
-      a {
-        font-size: 16px;
-        padding: 15px 20px;
-      }
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.82);
+      font-size: 12px;
+      white-space: nowrap;
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Select Your Dashboard Version</h1>
-    
-    <div class="version-buttons">
-      [🎄 Version 1 – Original Dashboard](index_v1.html)
-      [🚀 Version 2 – Updated Dashboard](index_v2.html)
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="badge">
+        <span class="dot"></span>
+        Enterprise h2oGPTe Demo
+        <span style="opacity:.7;">|</span>
+        Policy-compliant gift recommendations
+      </div>
+
+      <div class="badge" aria-label="Tip">
+        Tip: Open a dashboard in a new tab for best performance
+        <span class="kbd">⌘</span> + click
+      </div>
     </div>
-    
-    <div class="version-info">
-      <strong>Note:</strong> Choose between the holiday-themed original version or the updated H2O.ai branded dashboard.
+
+    <div class="hero">
+      <h1>Holiday Gift Agent Dashboard</h1>
+      <p class="subtitle">
+        Choose a version of the interactive dashboard. Both demonstrate a policy-aware workflow for generating
+        holiday gift recommendations with strict budget constraints, then visualizing results in a single-page app.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h2>
+            Version 1
+            <span class="pill"><span class="mini-dot"></span> Holiday theme</span>
+          </h2>
+          <p>
+            Traditional festive styling with the original interaction flow.
+          </p>
+          <a class="btn" href="index_v1.html" aria-label="Open Version 1">
+            Open Version 1
+            <span class="arrow">↗</span>
+          </a>
+        </div>
+
+        <div class="card">
+          <h2>
+            Version 2
+            <span class="pill"><span class="mini-dot"></span> H2O.ai branding</span>
+          </h2>
+          <p>
+            Updated styling aligned with H2O.ai brand direction and improved UI polish.
+          </p>
+          <a class="btn" href="index_v2.html" aria-label="Open Version 2">
+            Open Version 2
+            <span class="arrow">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="meta">
+        <a href="https://youtu.be/RCsjmUjXLcw" target="_blank" rel="noopener">
+          Webinar recording
+          <span class="arrow">↗</span>
+        </a>
+        <a href="https://github.com/Andreea-Turcu/holiday-company-gift-card-agents-demo" target="_blank" rel="noopener">
+          GitHub repository
+          <span class="arrow">↗</span>
+        </a>
+      </div>
     </div>
+
+    <div class="section" id="slides">
+      <div class="section-head">
+        <div>
+          <h3>Presentation Slides</h3>
+          <p class="small">
+            Slides open in your browser and can be downloaded for offline use. If your browser blocks inline PDFs,
+            use the open/download link below.
+          </p>
+        </div>
+
+        <div class="slides-actions">
+          <a
+            class="link-btn"
+            href="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf"
+            target="_blank"
+            rel="noopener"
+          >
+            Open / Download PDF
+            <span class="arrow">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="iframe-wrap" aria-label="Embedded PDF slides">
+        <iframe
+          src="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf"
+          loading="lazy"
+          title="Presentation Slides - Create Your Own AI Agent with h2oGPTe"
+        ></iframe>
+      </div>
+
+      <p class="footer">
+        Compliance note: This page and demo are for educational purposes. Do not include confidential or sensitive
+        data when using freemium environments. Use approved enterprise deployments for real policy workflows.
+      </p>
+    </div>
+
   </div>
+
+  <script>
+    // Smooth scroll to slides when the URL contains #slides
+    (function () {
+      if (window.location.hash === "#slides") {
+        const el = document.getElementById("slides");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    })();
+
+    // Add subtle tap feedback on mobile for buttons
+    document.querySelectorAll(".btn, .link-btn, .meta a").forEach(function (btn) {
+      btn.addEventListener("pointerdown", function () {
+        btn.style.transform = "translateY(0px) scale(0.99)";
+        setTimeout(function () {
+          btn.style.transform = "";
+        }, 120);
+      });
+    });
+  </script>
 </body>
 </html>
