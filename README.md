@@ -1,3 +1,5 @@
+View / download: https://raw.githubusercontent.com/Andreea-Turcu/holiday-company-gift-card-agents-demo/main/Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf
+
 # Holiday Company Gift Card Agents Demo
 A demonstration project showcasing an AI-powered Holiday Gift Recommendations Dashboard built using **h2oGPTe** (H2O.ai's enterprise generative AI platform). This project demonstrates how AI agents can help companies select policy-compliant, thoughtful gifts for employees and clients during the holiday season.
 ## What This Project Does
