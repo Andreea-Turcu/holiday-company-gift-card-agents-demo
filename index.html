@@ -62,6 +62,7 @@
       font-size: 13px;
       color: var(--muted);
       user-select: none;
+      text-decoration: none;
     }
 
     .dot{
@@ -162,7 +163,7 @@
       color: var(--muted);
       font-size: 13.5px;
       line-height: 1.5;
-      min-height: 42px; /* aligns buttons */
+      min-height: 42px;
     }
 
     .btn{
@@ -267,7 +268,7 @@
       border-color: rgba(255,255,255,0.24);
     }
 
-    /* Video embed */
+    /* Video */
     .video-wrap{
       margin-top: 10px;
       border-radius: 16px;
@@ -283,7 +284,7 @@
       display: block;
     }
 
-    /* PDF single-page viewer (PDF.js) */
+    /* PDF.js single-page viewer */
     .pdf-shell{
       margin-top: 12px;
       border-radius: 16px;
@@ -314,16 +315,30 @@
     .pdf-canvas-wrap{
       display: grid;
       place-items: center;
-      padding: 12px;
+      padding: 16px;
+      min-height: 820px; /* bigger, matches your ask */
+    }
+    @media (max-width: 720px){
+      .pdf-canvas-wrap{ min-height: 680px; }
     }
     canvas#pdfCanvas{
       max-width: 100%;
       height: auto;
       border-radius: 12px;
       background: rgba(255,255,255,0.02);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+    }
+    .pdf-error{
+      display: none;
+      padding: 14px 16px;
+      color: rgba(255,255,255,0.86);
+      background: rgba(255,120,120,0.10);
+      border-top: 1px solid rgba(255,255,255,0.10);
+      font-size: 13px;
+      line-height: 1.45;
     }
 
-    /* Prompts list */
+    /* Prompts */
     details.prompt{
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.03);
@@ -454,13 +469,10 @@
       <div class="section-head">
         <div>
           <h3>Presentation Slides</h3>
-          <p class="small">
-            Single-page viewer with arrows. If you prefer, download the PDF.
-          </p>
+          <p class="small">Single-page viewer with arrows. If you prefer, download the PDF.</p>
         </div>
 
         <div class="slides-actions">
-          <!-- Make sure this file exists in the same folder as this index.html -->
           <a class="link-btn" href="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf" target="_blank" rel="noopener">
             Open / Download PDF <span class="arrow">↗</span>
           </a>
@@ -472,7 +484,7 @@
           <div class="pdf-left">
             <button class="link-btn" id="prevPage" type="button">Prev</button>
             <button class="link-btn" id="nextPage" type="button">Next</button>
-            <span class="pdf-stat" id="pageStat">Page - / -</span>
+            <span class="pdf-stat" id="pageStat">Loading…</span>
           </div>
           <div class="pdf-right">
             <button class="link-btn" id="zoomOut" type="button">Zoom -</button>
@@ -480,8 +492,12 @@
           </div>
         </div>
 
-        <div class="pdf-canvas-wrap">
+        <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
           <canvas id="pdfCanvas"></canvas>
+        </div>
+
+        <div class="pdf-error" id="pdfError">
+          PDF failed to load. Confirm the PDF filename matches exactly (including capitalization) and is in the same folder as this page.
         </div>
       </div>
 
@@ -495,22 +511,18 @@
       <div class="section-head">
         <div>
           <h3>Copy-paste Prompts (by slide)</h3>
-          <p class="small">Open each block, copy, paste, run.</p>
+          <p class="small">Open each block, copy, paste, run. You can also download them as a PDF.</p>
         </div>
 
         <div class="slides-actions">
-          <!-- Optional: add the prompts PDF to your repo and link it here -->
-          <a class="link-btn" href="holiday_agent_prompts_pack.pdf" target="_blank" rel="noopener">
-            Open prompts PDF <span class="arrow">↗</span>
-          </a>
+          <button class="link-btn" id="downloadPromptsPdf" type="button">
+            Download prompts as PDF <span class="arrow">↗</span>
+          </button>
         </div>
       </div>
 
       <details class="prompt">
-        <summary>
-          Slide 17
-          <span class="prompt-meta">Party plan prompt</span>
-        </summary>
+        <summary>Slide 17 <span class="prompt-meta">Party plan prompt</span></summary>
         <pre class="code" id="p17">I'm planning a holiday party for 15 people with a $300 budget.
 Can you help me create a complete party plan including:
 - Budget breakdown (food, drinks, decorations, entertainment)
@@ -522,10 +534,7 @@ Make it festive and fun for a Christmas theme!</pre>
       </details>
 
       <details class="prompt">
-        <summary>
-          Slide 18
-          <span class="prompt-meta">Regenerate as JSON</span>
-        </summary>
+        <summary>Slide 18 <span class="prompt-meta">Regenerate as JSON</span></summary>
         <pre class="code" id="p18">Perfect! Now regenerate that party plan as a JSON object with this schema:
 
 {
@@ -566,19 +575,13 @@ Output ONLY the JSON, no extra text.</pre>
       </details>
 
       <details class="prompt">
-        <summary>
-          Slide 22
-          <span class="prompt-meta">RAG policy doc</span>
-        </summary>
+        <summary>Slide 22 <span class="prompt-meta">RAG policy doc</span></summary>
         <pre class="code" id="p22">https://triagelogic.com/wp-content/uploads/2018/06/Company-Policy-and-Procedure-June-1.18-V6.0.pdf</pre>
         <button class="link-btn" type="button" data-copy="#p22">Copy</button>
       </details>
 
       <details class="prompt">
-        <summary>
-          Slide 23
-          <span class="prompt-meta">System prompt</span>
-        </summary>
+        <summary>Slide 23 <span class="prompt-meta">System prompt</span></summary>
         <pre class="code" id="p23">You are an AI Agent that must follow these rules:
 1. Always use rag_text to retrieve relevant information from the attached document collection before answering.
 2. Base your answers on the retrieved content and cite alignment or conflicts clearly.
@@ -596,10 +599,7 @@ Output ONLY the JSON, no extra text.</pre>
       </details>
 
       <details class="prompt">
-        <summary>
-          Slide 24
-          <span class="prompt-meta">Gift request</span>
-        </summary>
+        <summary>Slide 24 <span class="prompt-meta">Gift request</span></summary>
         <pre class="code" id="p24">I need to find appropriate holiday gifts for 3 different people:
 1. A colleague who loves tech gadgets (budget $40-70)
 2. A senior client who wants thoughtful, professional gifts (budget $80-120)
@@ -619,19 +619,13 @@ Make sure recommendations do not violate any company rules, If there are no Gift
       </details>
 
       <details class="prompt">
-        <summary>
-          Slide 25
-          <span class="prompt-meta">Additional policy manual</span>
-        </summary>
+        <summary>Slide 25 <span class="prompt-meta">Additional policy manual</span></summary>
         <pre class="code" id="p25">https://diabengineering.com.au/wp-content/uploads/2019/02/HSE-MAN-001-001-DIAB-Engineering-Policy-Manual-Rev05-All-Policies.pdf</pre>
         <button class="link-btn" type="button" data-copy="#p25">Copy</button>
       </details>
 
       <details class="prompt">
-        <summary>
-          Slide 26
-          <span class="prompt-meta">Build the HTML app</span>
-        </summary>
+        <summary>Slide 26 <span class="prompt-meta">Build the HTML app</span></summary>
         <pre class="code" id="p26">I previously asked you to find appropriate holiday gifts for 3 different
 people with specific budgets and constraints. Now I need you to create an
 interactive HTML Gift Recommendation Dashboard to visualize those
@@ -672,10 +666,7 @@ Complete, working HTML file with embedded CSS and JavaScript.</pre>
       </details>
 
       <details class="prompt">
-        <summary>
-          Slide 27
-          <span class="prompt-meta">Selection + email + brand kit</span>
-        </summary>
+        <summary>Slide 27 <span class="prompt-meta">Selection + email + brand kit</span></summary>
         <pre class="code" id="p27">modify the html so that I can click on the option, one choice per column/ individual, so that when the gift is selected the budget used updates with the price of that product/ gift only, and there is a button in addition, where you can click after selection, to forward in an email where you need to inform the email address and the name of the person, object plus description about Happy Holidays, here is you gift card, thank you !
 
 Open the generated email writing to google account directly, and instead of the original colors use my company branding kit that you can find here: https://h2o.ai/company/brand-kit/</pre>
@@ -683,10 +674,7 @@ Open the generated email writing to google account directly, and instead of the 
       </details>
 
       <details class="prompt">
-        <summary>
-          Slide 29
-          <span class="prompt-meta">Quiz link</span>
-        </summary>
+        <summary>Slide 29 <span class="prompt-meta">Quiz link</span></summary>
         <pre class="code" id="p29">https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23</pre>
         <button class="link-btn" type="button" data-copy="#p29">Copy</button>
       </details>
@@ -696,8 +684,11 @@ Open the generated email writing to google account directly, and instead of the 
 
   <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.js"></script>
+  <!-- jsPDF (for prompts download) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <script>
-    // ---------- Tap feedback ----------
+    // Tap feedback
     document.querySelectorAll(".btn, .link-btn, .badge").forEach(function (btn) {
       btn.addEventListener("pointerdown", function () {
         btn.style.transform = "translateY(0px) scale(0.99)";
@@ -705,7 +696,7 @@ Open the generated email writing to google account directly, and instead of the 
       });
     });
 
-    // ---------- Copy buttons ----------
+    // Copy buttons
     document.querySelectorAll("[data-copy]").forEach(function (b) {
       b.addEventListener("click", async function () {
         const sel = b.getAttribute("data-copy");
@@ -717,7 +708,6 @@ Open the generated email writing to google account directly, and instead of the 
           b.textContent = "Copied";
           setTimeout(function(){ b.textContent = old; }, 900);
         }catch(e){
-          // fallback
           const ta = document.createElement("textarea");
           ta.value = el.textContent;
           document.body.appendChild(ta);
@@ -728,39 +718,137 @@ Open the generated email writing to google account directly, and instead of the 
       });
     });
 
-    // ---------- PDF.js single-page viewer ----------
+    // Download prompts as PDF
+    (function () {
+      const btn = document.getElementById("downloadPromptsPdf");
+      if (!btn) return;
+
+      function collectPrompts() {
+        const items = [];
+        document.querySelectorAll("details.prompt").forEach((d) => {
+          const slide = (d.querySelector("summary")?.innerText || "").trim().split("\n")[0];
+          const pre = d.querySelector("pre.code");
+          const text = (pre?.textContent || "").trim();
+          if (slide && text) items.push({ slide, text });
+        });
+        return items;
+      }
+
+      btn.addEventListener("click", async function () {
+        const jspdf = window.jspdf;
+        const jsPDF = jspdf && jspdf.jsPDF;
+        if (!jsPDF) {
+          alert("PDF generator failed to load. Try again.");
+          return;
+        }
+
+        const doc = new jsPDF({ unit: "pt", format: "a4" });
+        const margin = 44;
+        const pageW = doc.internal.pageSize.getWidth();
+        const pageH = doc.internal.pageSize.getHeight();
+        const maxW = pageW - margin * 2;
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.text("Holiday Agents Demo - Prompts Pack", margin, 64);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.text("Copy-paste ready prompts by slide.", margin, 84);
+
+        let y = 110;
+        const prompts = collectPrompts();
+
+        for (const p of prompts) {
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(12);
+
+          const titleLines = doc.splitTextToSize(p.slide, maxW);
+          const titleH = titleLines.length * 14;
+
+          if (y + titleH + 20 > pageH - margin) { doc.addPage(); y = 64; }
+          doc.text(titleLines, margin, y);
+          y += titleH + 8;
+
+          doc.setFont("courier", "normal");
+          doc.setFontSize(9);
+
+          const codeLines = doc.splitTextToSize(p.text, maxW);
+          const lineH = 11;
+          const boxPad = 10;
+          const boxH = codeLines.length * lineH + boxPad * 2;
+
+          if (y + boxH + 18 > pageH - margin) { doc.addPage(); y = 64; }
+
+          doc.setDrawColor(210);
+          doc.setFillColor(245, 246, 248);
+          doc.rect(margin, y, maxW, boxH, "FD");
+          doc.text(codeLines, margin + boxPad, y + boxPad + 8);
+
+          y += boxH + 18;
+        }
+
+        doc.save("holiday_agent_prompts_pack.pdf");
+      });
+    })();
+
+    // PDF.js single-page viewer with fit-to-width default
     (function () {
       const url = "Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf";
       const canvas = document.getElementById("pdfCanvas");
+      const wrap = document.getElementById("pdfCanvasWrap");
       const ctx = canvas.getContext("2d");
-
-      let pdfDoc = null;
-      let pageNum = 1;
-      let pageCount = 0;
-      let scale = 1.2;
-      let rendering = false;
-      let pendingPage = null;
 
       const pageStat = document.getElementById("pageStat");
       const prevBtn = document.getElementById("prevPage");
       const nextBtn = document.getElementById("nextPage");
       const zoomOut = document.getElementById("zoomOut");
       const zoomIn = document.getElementById("zoomIn");
+      const pdfError = document.getElementById("pdfError");
+
+      let pdfDoc = null;
+      let pageNum = 1;
+      let pageCount = 0;
+
+      let fitScale = 1.0;     // computed fit-to-width
+      let userZoom = 1.0;     // user zoom multiplier
+      let rendering = false;
+      let pendingPage = null;
 
       function setStat() {
-        pageStat.textContent = "Page " + pageNum + " / " + pageCount;
+        if (!pageCount) pageStat.textContent = "Loading…";
+        else pageStat.textContent = "Page " + pageNum + " / " + pageCount;
+      }
+
+      function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+      async function computeFitScale(page) {
+        const base = page.getViewport({ scale: 1 });
+        const availW = Math.max(320, wrap.clientWidth - 32); // padding margin
+        const s = availW / base.width;
+        return clamp(s, 0.7, 2.2);
       }
 
       async function renderPage(num) {
         rendering = true;
+        pdfError.style.display = "none";
+
         const page = await pdfDoc.getPage(num);
+        fitScale = await computeFitScale(page);
+
+        const scale = clamp(fitScale * userZoom, 0.6, 3.0);
 
         const viewport = page.getViewport({ scale });
-        canvas.width = Math.floor(viewport.width);
-        canvas.height = Math.floor(viewport.height);
 
-        const renderContext = { canvasContext: ctx, viewport };
-        await page.render(renderContext).promise;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.width = Math.floor(viewport.width) + "px";
+        canvas.style.height = Math.floor(viewport.height) + "px";
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        await page.render({ canvasContext: ctx, viewport }).promise;
 
         rendering = false;
         setStat();
@@ -773,11 +861,8 @@ Open the generated email writing to google account directly, and instead of the 
       }
 
       function queueRender(num) {
-        if (rendering) {
-          pendingPage = num;
-        } else {
-          renderPage(num);
-        }
+        if (rendering) pendingPage = num;
+        else renderPage(num);
       }
 
       prevBtn.addEventListener("click", function () {
@@ -794,27 +879,46 @@ Open the generated email writing to google account directly, and instead of the 
 
       zoomOut.addEventListener("click", function () {
         if (!pdfDoc) return;
-        scale = Math.max(0.6, +(scale - 0.1).toFixed(2));
+        userZoom = clamp(+(userZoom - 0.1).toFixed(2), 0.6, 2.0);
         queueRender(pageNum);
       });
 
       zoomIn.addEventListener("click", function () {
         if (!pdfDoc) return;
-        scale = Math.min(2.2, +(scale + 0.1).toFixed(2));
+        userZoom = clamp(+(userZoom + 0.1).toFixed(2), 0.6, 2.0);
         queueRender(pageNum);
       });
 
-      pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.worker.min.js";
-
-      pdfjsLib.getDocument(url).promise.then(function (pdf) {
-        pdfDoc = pdf;
-        pageCount = pdf.numPages;
-        setStat();
-        renderPage(pageNum);
-      }).catch(function () {
-        pageStat.textContent = "PDF failed to load. Use the Open / Download PDF link.";
+      let resizeTimer = null;
+      window.addEventListener("resize", function () {
+        if (!pdfDoc) return;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          queueRender(pageNum);
+        }, 140);
       });
+
+      try{
+        if (!window.pdfjsLib) throw new Error("pdfjsLib not available");
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.worker.min.js";
+
+        setStat();
+
+        pdfjsLib.getDocument({ url }).promise.then(function (pdf) {
+          pdfDoc = pdf;
+          pageCount = pdf.numPages;
+          setStat();
+          renderPage(pageNum);
+        }).catch(function () {
+          pageStat.textContent = "PDF failed to load.";
+          pdfError.style.display = "block";
+        });
+      }catch(e){
+        pageStat.textContent = "PDF viewer unavailable.";
+        pdfError.style.display = "block";
+      }
     })();
   </script>
 </body>
