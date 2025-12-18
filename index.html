@@ -1,464 +1,196 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Holiday Gift Agent Dashboard – Versions</title>
+<section class="u-wrap">
+  <!-- Optional: Webinar recording (embedded video) -->
+  <div class="u-block">
+    <h2 class="u-h2">Webinar Recording</h2>
+    <p class="u-sub">
+      Watch the full session, then jump into the slides and quiz.
+    </p>
 
-  <style>
-    :root{
-      --bg: #0b0f19;
-      --card: rgba(255,255,255,0.06);
-      --card-2: rgba(255,255,255,0.08);
-      --border: rgba(255,255,255,0.14);
-      --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.70);
-      --shadow: 0 18px 45px rgba(0,0,0,0.35);
-
-      --accent: #ffd200;      /* H2O.ai-ish accent */
-      --accent-2: #00d3ff;    /* secondary accent */
-      --btn: rgba(255,255,255,0.10);
-      --btn-hover: rgba(255,255,255,0.16);
-      --focus: rgba(255,210,0,0.55);
-    }
-
-    * { box-sizing: border-box; }
-
-    body{
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(900px 500px at 15% 10%, rgba(255,210,0,0.18), transparent 55%),
-        radial-gradient(800px 450px at 85% 15%, rgba(0,211,255,0.16), transparent 55%),
-        radial-gradient(900px 600px at 50% 90%, rgba(255,255,255,0.06), transparent 60%),
-        var(--bg);
-      min-height: 100vh;
-    }
-
-    .wrap{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 48px 20px 70px;
-    }
-
-    .topbar{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 26px;
-      flex-wrap: wrap;
-    }
-
-    .badge{
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      border-radius: 999px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-      font-size: 13px;
-      color: var(--muted);
-      user-select: none;
-    }
-
-    .dot{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 0 6px rgba(255,210,0,0.15);
-    }
-
-    .hero{
-      padding: 26px 22px 22px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-    }
-
-    h1{
-      margin: 0;
-      font-size: clamp(26px, 3.2vw, 38px);
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-    }
-
-    .subtitle{
-      margin: 12px 0 0;
-      color: var(--muted);
-      font-size: 15.5px;
-      line-height: 1.55;
-      max-width: 72ch;
-    }
-
-    .grid{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    @media (max-width: 720px){
-      .grid{ grid-template-columns: 1fr; }
-    }
-
-    .card{
-      position: relative;
-      padding: 16px 16px 14px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.26);
-      overflow: hidden;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-
-    .card:hover{
-      transform: translateY(-2px);
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(255,255,255,0.22);
-    }
-
-    .card h2{
-      margin: 0 0 6px;
-      font-size: 16px;
-      letter-spacing: -0.01em;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .pill{
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.06);
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .pill .mini-dot{
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--accent-2);
-      box-shadow: 0 0 0 5px rgba(0,211,255,0.12);
-    }
-
-    .card p{
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: 13.5px;
-      line-height: 1.5;
-    }
-
-    .btn{
-      display: inline-flex;
-      width: 100%;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 14px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: var(--btn);
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 650;
-      letter-spacing: 0.01em;
-      transition: transform .16s ease, background .16s ease, border-color .16s ease;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .btn:hover{
-      background: var(--btn-hover);
-      border-color: rgba(255,255,255,0.26);
-      transform: translateY(-1px);
-    }
-
-    .btn:focus-visible{
-      box-shadow: 0 0 0 4px var(--focus);
-    }
-
-    .arrow{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.18);
-      font-size: 16px;
-    }
-
-    .meta{
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 720px){
-      .meta{ grid-template-columns: 1fr; }
-    }
-
-    .meta a{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.04);
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 13.5px;
-      transition: background .16s ease, border-color .16s ease, transform .16s ease;
-    }
-
-    .meta a:hover{
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.22);
-      transform: translateY(-1px);
-      color: var(--text);
-    }
-
-    .section{
-      margin-top: 22px;
-      padding: 18px 18px 14px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.045);
-      box-shadow: 0 14px 38px rgba(0,0,0,0.22);
-      backdrop-filter: blur(12px);
-    }
-
-    .section-head{
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-
-    .section h3{
-      margin: 0;
-      font-size: 16px;
-      letter-spacing: -0.01em;
-    }
-
-    .small{
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .slides-actions{
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .link-btn{
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 13px;
-      transition: transform .16s ease, background .16s ease, border-color .16s ease;
-    }
-
-    .link-btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.09);
-      border-color: rgba(255,255,255,0.24);
-    }
-
-    .iframe-wrap{
-      margin-top: 12px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.15);
-    }
-
-    iframe{
-      display: block;
-      width: 100%;
-      height: 860px;
-      border: 0;
-    }
-
-    @media (max-width: 720px){
-      iframe{ height: 620px; }
-    }
-
-    .footer{
-      margin-top: 18px;
-      color: rgba(255,255,255,0.62);
-      font-size: 12.5px;
-      line-height: 1.5;
-    }
-
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      padding: 2px 7px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.82);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="wrap">
-
-    <div class="topbar">
-      <div class="badge">
-        <span class="dot"></span>
-        Enterprise h2oGPTe Demo
-        <span style="opacity:.7;">|</span>
-        Policy-compliant gift recommendations
-      </div>
-
-      <div class="badge" aria-label="Tip">
-        Tip: Open a dashboard in a new tab for best performance
-        <span class="kbd">⌘</span> + click
-      </div>
+    <div class="u-media">
+      <!-- Replace VIDEO_URL with your actual recording URL (YouTube/Vimeo/etc.) -->
+      <iframe
+        src="VIDEO_URL"
+        title="Webinar Recording"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
     </div>
 
-    <div class="hero">
-      <h1>Holiday Gift Agent Dashboard</h1>
-      <p class="subtitle">
-        Choose a version of the interactive dashboard. Both demonstrate a policy-aware workflow for generating
-        holiday gift recommendations with strict budget constraints, then visualizing results in a single-page app.
-      </p>
+    <div class="u-actions">
+      <a
+        class="u-linkbtn"
+        href="https://h2o.ai/university/courses/build-practical-ai-agents-with-h2ogpte/"
+        target="_blank"
+        rel="noopener"
+      >
+        Open course page
+      </a>
 
-      <div class="grid">
-        <div class="card">
-          <h2>
-            Version 1
-            <span class="pill"><span class="mini-dot"></span> Holiday theme</span>
-          </h2>
-          <p>
-            Traditional festive styling with the original interaction flow.
-          </p>
-          <a class="btn" href="index_v1.html" aria-label="Open Version 1">
-            Open Version 1
-            <span class="arrow">↗</span>
-          </a>
-        </div>
-
-        <div class="card">
-          <h2>
-            Version 2
-            <span class="pill"><span class="mini-dot"></span> H2O.ai branding</span>
-          </h2>
-          <p>
-            Updated styling aligned with H2O.ai brand direction and improved UI polish.
-          </p>
-          <a class="btn" href="index_v2.html" aria-label="Open Version 2">
-            Open Version 2
-            <span class="arrow">↗</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="meta">
-        <a href="https://youtu.be/RCsjmUjXLcw" target="_blank" rel="noopener">
-          Webinar recording
-          <span class="arrow">↗</span>
-        </a>
-        <a href="https://github.com/Andreea-Turcu/holiday-company-gift-card-agents-demo" target="_blank" rel="noopener">
-          GitHub repository
-          <span class="arrow">↗</span>
-        </a>
-      </div>
+      <a
+        class="u-linkbtn"
+        href="https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23"
+        target="_blank"
+        rel="noopener"
+      >
+        Open quiz
+      </a>
     </div>
-
-    <div class="section" id="slides">
-      <div class="section-head">
-        <div>
-          <h3>Presentation Slides</h3>
-          <p class="small">
-            Slides open in your browser and can be downloaded for offline use. If your browser blocks inline PDFs,
-            use the open/download link below.
-          </p>
-        </div>
-
-        <div class="slides-actions">
-          <a
-            class="link-btn"
-            href="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf"
-            target="_blank"
-            rel="noopener"
-          >
-            Open / Download PDF
-            <span class="arrow">↗</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="iframe-wrap" aria-label="Embedded PDF slides">
-        <iframe
-          src="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf"
-          loading="lazy"
-          title="Presentation Slides - Create Your Own AI Agent with h2oGPTe"
-        ></iframe>
-      </div>
-
-      <p class="footer">
-        Compliance note: This page and demo are for educational purposes. Do not include confidential or sensitive
-        data when using freemium environments. Use approved enterprise deployments for real policy workflows.
-      </p>
-    </div>
-
   </div>
 
-  <script>
-    // Smooth scroll to slides when the URL contains #slides
-    (function () {
-      if (window.location.hash === "#slides") {
-        const el = document.getElementById("slides");
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    })();
+  <!-- Slides -->
+  <div class="u-block">
+    <h2 class="u-h2">Presentation Slides</h2>
+    <p class="u-sub">
+      Open in a new tab for best performance.
+    </p>
 
-    // Add subtle tap feedback on mobile for buttons
-    document.querySelectorAll(".btn, .link-btn, .meta a").forEach(function (btn) {
-      btn.addEventListener("pointerdown", function () {
-        btn.style.transform = "translateY(0px) scale(0.99)";
-        setTimeout(function () {
-          btn.style.transform = "";
-        }, 120);
-      });
-    });
-  </script>
-</body>
-</html>
+    <p class="u-inline">
+      <a
+        href="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf"
+        target="_blank"
+        rel="noopener"
+      >
+        Open or download the presentation slides (PDF)
+      </a>
+    </p>
+
+    <iframe
+      src="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf"
+      width="100%"
+      height="900"
+      class="u-pdf"
+      loading="lazy"
+      title="Presentation Slides PDF"
+    ></iframe>
+  </div>
+
+  <!-- Two cards -->
+  <div class="u-grid">
+    <article class="u-card">
+      <div class="u-cardtop">
+        <div>
+          <h3 class="u-title">Version 1</h3>
+          <p class="u-desc">Traditional festive styling with the original interaction flow.</p>
+        </div>
+        <span class="u-pill"><span class="u-dot"></span>Holiday theme</span>
+      </div>
+
+      <a class="u-cta" href="VERSION_1_URL" target="_blank" rel="noopener">
+        <span>Open Version 1</span>
+        <span class="u-ico" aria-hidden="true">↗</span>
+      </a>
+    </article>
+
+    <article class="u-card">
+      <div class="u-cardtop">
+        <div>
+          <h3 class="u-title">Version 2</h3>
+          <p class="u-desc">
+            Updated styling aligned with H2O.ai brand direction and improved UI polish.
+          </p>
+        </div>
+        <span class="u-pill"><span class="u-dot"></span>H2O.ai branding</span>
+      </div>
+
+      <a class="u-cta" href="VERSION_2_URL" target="_blank" rel="noopener">
+        <span>Open Version 2</span>
+        <span class="u-ico" aria-hidden="true">↗</span>
+      </a>
+    </article>
+  </div>
+</section>
+
+<style>
+  .u-wrap{margin:40px auto;max-width:1200px;padding:0 16px;color:#0b1220;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  .u-block{margin-bottom:22px}
+  .u-h2{margin:0 0 6px;font-size:22px;letter-spacing:-.2px}
+  .u-sub{margin:0 0 12px;opacity:.75}
+  .u-inline{margin:0 0 14px}
+  .u-pdf{border:none;border-radius:14px;overflow:hidden;background:#0b122008}
+  .u-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  @media (max-width:860px){.u-grid{grid-template-columns:1fr}}
+
+  .u-card{
+    border-radius:26px;
+    padding:22px;
+    background: radial-gradient(1200px 400px at 20% 0%, rgba(255,255,255,.10), rgba(255,255,255,.04));
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow: 0 16px 50px rgba(0,0,0,.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color:#0b1220;
+  }
+
+  /* Key part: equal header height so the buttons align */
+  .u-cardtop{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+    min-height:112px; /* forces consistent height across cards */
+  }
+
+  .u-title{margin:0 0 6px;font-size:34px;letter-spacing:-.6px}
+  .u-desc{margin:0;opacity:.75;max-width:48ch}
+
+  .u-pill{
+    display:inline-flex;align-items:center;gap:10px;
+    border-radius:999px;padding:10px 14px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.12);
+    font-weight:600;white-space:nowrap;
+  }
+  .u-dot{width:10px;height:10px;border-radius:50%;background:#2aa8ff;box-shadow:0 0 0 5px rgba(42,168,255,.18)}
+
+  .u-cta{
+    margin-top:18px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;
+    text-decoration:none;
+    border-radius:18px;
+    padding:18px 18px;
+    background:rgba(11,18,32,.06);
+    border:1px solid rgba(11,18,32,.10);
+    font-size:26px;
+    font-weight:700;
+    color:inherit;
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .u-cta:hover{transform:translateY(-1px);background:rgba(11,18,32,.09);box-shadow:0 10px 30px rgba(0,0,0,.10)}
+  .u-cta:active{transform:translateY(0)}
+  .u-ico{
+    width:44px;height:44px;border-radius:999px;
+    display:grid;place-items:center;
+    border:1px solid rgba(11,18,32,.18);
+    background:rgba(255,255,255,.22);
+    font-size:20px;
+  }
+
+  /* Video wrapper */
+  .u-media{
+    width:100%;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid rgba(11,18,32,.10);
+    background:rgba(11,18,32,.06);
+  }
+  .u-media iframe{
+    display:block;
+    width:100%;
+    aspect-ratio:16/9;
+    border:0;
+  }
+
+  .u-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .u-linkbtn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:10px 14px;border-radius:999px;
+    border:1px solid rgba(11,18,32,.14);
+    background:rgba(11,18,32,.05);
+    color:inherit;text-decoration:none;font-weight:700;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .u-linkbtn:hover{transform:translateY(-1px);background:rgba(11,18,32,.08)}
+</style>
