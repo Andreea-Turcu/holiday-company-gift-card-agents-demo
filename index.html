@@ -12,16 +12,8 @@
       --secondary-hover: #6008a0;
       --light: #f8f9fa;
       --dark: #212529;
-      --success: #38b000;
       --border-radius: 12px;
       --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
     }
     
     body {
@@ -31,36 +23,27 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
       line-height: 1.6;
       padding: 20px;
+      margin: 0;
     }
     
     .container {
       max-width: 900px;
-      margin: 0 auto;
+      width: 100%;
       padding: 40px;
       background-color: white;
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
-      transform: translateY(0);
-      transition: var(--transition);
-    }
-    
-    .container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    }
-    
-    header {
-      margin-bottom: 40px;
       text-align: center;
     }
     
     h1 {
       font-size: 32px;
       font-weight: 700;
-      margin-bottom: 15px;
+      margin-bottom: 40px;
       color: var(--primary);
       position: relative;
       display: inline-block;
@@ -78,17 +61,11 @@
       border-radius: 2px;
     }
     
-    .subtitle {
-      font-size: 18px;
-      color: #6c757d;
-      margin-bottom: 30px;
-    }
-    
     .version-cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 25px;
-      margin-bottom: 40px;
+      margin-top: 30px;
     }
     
     .card {
@@ -96,11 +73,9 @@
       border-radius: var(--border-radius);
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-      transition: var(--transition);
+      transition: all 0.3s ease;
       border: 1px solid #eaeaea;
       height: 100%;
-      display: flex;
-      flex-direction: column;
     }
     
     .card:hover {
@@ -112,15 +87,10 @@
       background: linear-gradient(45deg, var(--primary), var(--secondary));
       color: white;
       padding: 20px;
-      text-align: center;
     }
     
     .card-body {
       padding: 25px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
     }
     
     .version-title {
@@ -132,7 +102,6 @@
     .version-description {
       color: #6c757d;
       margin-bottom: 20px;
-      font-size: 16px;
     }
     
     .btn {
@@ -144,33 +113,60 @@
       border-radius: var(--border-radius);
       font-weight: 600;
       font-size: 16px;
-      text-align: center;
-      transition: var(--transition);
-      border: none;
-      cursor: pointer;
+      transition: all 0.3s ease;
       width: 100%;
-      margin-top: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      box-sizing: border-box;
     }
     
-    .btn-primary {
-      background-color: var(--primary);
-    }
-    
-    .btn-primary:hover {
+    .btn:hover {
       background-color: var(--primary-hover);
       transform: translateY(-3px);
       box-shadow: 0 7px 14px rgba(67, 97, 238, 0.3);
     }
     
-    .btn-secondary {
-      background-color: var(--secondary);
+    .presentation-section {
+      margin-top: 50px;
+      padding: 30px;
+      background-color: #f8f9fa;
+      border-radius: var(--border-radius);
     }
     
-    .btn-secondary:hover {
-      background-color: var(--secondary-hover);
-      transform: translateY(-3px);
-      box
+    .presentation-section h2 {
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    
+    .iframe-container {
+      position: relative;
+      overflow: hidden;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      margin-bottom: 20px;
+    }
+    
+    .iframe-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Holiday Gift Agent Dashboard – Versions</h1>
+    
+    <div class="version-cards">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="version-title">Version 1</h2>
+        </div>
+        <div class="card-body">
+          <p class="version-description">Original Dashboard with basic functionality</p>
+          [Open Version 1](https://andreea-turcu.github.io/holiday-company-gift-card-agents-demo/version1.html)
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-
