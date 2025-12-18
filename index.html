@@ -8,8 +8,6 @@
   <style>
     :root{
       --bg: #0b0f19;
-      --card: rgba(255,255,255,0.06);
-      --card-2: rgba(255,255,255,0.08);
       --border: rgba(255,255,255,0.14);
       --text: rgba(255,255,255,0.92);
       --muted: rgba(255,255,255,0.70);
@@ -118,7 +116,6 @@
       box-shadow: 0 16px 40px rgba(0,0,0,0.26);
       overflow: hidden;
       transition: transform .18s ease, border-color .18s ease, background .18s ease;
-
       display: flex;
       flex-direction: column;
     }
@@ -165,9 +162,7 @@
       color: var(--muted);
       font-size: 13.5px;
       line-height: 1.5;
-
-      /* Ensures both cards reserve the same text space so buttons align */
-      min-height: 42px;
+      min-height: 42px; /* aligns buttons */
     }
 
     .btn{
@@ -210,39 +205,6 @@
       background: rgba(255,255,255,0.10);
       border: 1px solid rgba(255,255,255,0.18);
       font-size: 16px;
-    }
-
-    .meta{
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 720px){
-      .meta{ grid-template-columns: 1fr; }
-    }
-
-    .meta a{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.04);
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 13.5px;
-      transition: background .16s ease, border-color .16s ease, transform .16s ease;
-    }
-
-    .meta a:hover{
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.22);
-      transform: translateY(-1px);
-      color: var(--text);
     }
 
     .section{
@@ -296,31 +258,13 @@
       font-weight: 600;
       font-size: 13px;
       transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      cursor: pointer;
     }
 
     .link-btn:hover{
       transform: translateY(-1px);
       background: rgba(255,255,255,0.09);
       border-color: rgba(255,255,255,0.24);
-    }
-
-    .iframe-wrap{
-      margin-top: 12px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.15);
-    }
-
-    iframe{
-      display: block;
-      width: 100%;
-      height: 860px;
-      border: 0;
-    }
-
-    @media (max-width: 720px){
-      iframe{ height: 620px; }
     }
 
     /* Video embed */
@@ -339,22 +283,89 @@
       display: block;
     }
 
+    /* PDF single-page viewer (PDF.js) */
+    .pdf-shell{
+      margin-top: 12px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.15);
+    }
+    .pdf-toolbar{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .pdf-left, .pdf-right{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pdf-stat{
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .pdf-canvas-wrap{
+      display: grid;
+      place-items: center;
+      padding: 12px;
+    }
+    canvas#pdfCanvas{
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* Prompts list */
+    details.prompt{
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+    details.prompt summary{
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text);
+      font-weight: 650;
+      font-size: 13.5px;
+    }
+    details.prompt summary::-webkit-details-marker{ display: none; }
+    .prompt-meta{
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    pre.code{
+      margin: 10px 0 0;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
+      overflow: auto;
+      color: rgba(255,255,255,0.88);
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
     .footer{
       margin-top: 18px;
       color: rgba(255,255,255,0.62);
       font-size: 12.5px;
       line-height: 1.5;
-    }
-
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      padding: 2px 7px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.82);
-      font-size: 12px;
-      white-space: nowrap;
     }
   </style>
 </head>
@@ -370,9 +381,10 @@
         Policy-compliant gift recommendations
       </div>
 
-      <div class="badge" aria-label="Tip">
-        Tip: Dashboards open in a new tab by default
-      </div>
+      <a class="badge" href="https://github.com/Andreea-Turcu/holiday-company-gift-card-agents-demo" target="_blank" rel="noopener">
+        View the GitHub repository
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
     </div>
 
     <div class="hero">
@@ -389,8 +401,6 @@
             <span class="pill"><span class="mini-dot"></span> Holiday theme</span>
           </h2>
           <p>Traditional festive styling with the original interaction flow.</p>
-
-          <!-- Opens in a new tab -->
           <a class="btn" href="index_v1.html" target="_blank" rel="noopener" aria-label="Open Version 1 in a new tab">
             Open Version 1
             <span class="arrow">↗</span>
@@ -403,28 +413,14 @@
             <span class="pill"><span class="mini-dot"></span> H2O.ai branding</span>
           </h2>
           <p>Updated styling aligned with H2O.ai brand direction and improved UI polish.</p>
-
-          <!-- Opens in a new tab -->
           <a class="btn" href="index_v2.html" target="_blank" rel="noopener" aria-label="Open Version 2 in a new tab">
             Open Version 2
             <span class="arrow">↗</span>
           </a>
         </div>
       </div>
-
-      <div class="meta">
-        <a href="https://h2o.ai/university/courses/build-practical-ai-agents-with-h2ogpte/" target="_blank" rel="noopener">
-          Course page
-          <span class="arrow">↗</span>
-        </a>
-        <a href="https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23" target="_blank" rel="noopener">
-          Quiz
-          <span class="arrow">↗</span>
-        </a>
-      </div>
     </div>
 
-    <!-- Webinar video section above slides -->
     <div class="section" id="webinar">
       <div class="section-head">
         <div>
@@ -443,7 +439,6 @@
       </div>
 
       <div class="video-wrap" aria-label="Embedded webinar video">
-        <!-- If you change the recording link, update the embed src here -->
         <iframe
           src="https://www.youtube.com/embed/RCsjmUjXLcw"
           title="Webinar recording"
@@ -460,30 +455,34 @@
         <div>
           <h3>Presentation Slides</h3>
           <p class="small">
-            Slides open in your browser and can be downloaded for offline use. If your browser blocks inline PDFs,
-            use the open/download link below.
+            Single-page viewer with arrows. If you prefer, download the PDF.
           </p>
         </div>
 
         <div class="slides-actions">
-          <a
-            class="link-btn"
-            href="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf"
-            target="_blank"
-            rel="noopener"
-          >
-            Open / Download PDF
-            <span class="arrow">↗</span>
+          <!-- Make sure this file exists in the same folder as this index.html -->
+          <a class="link-btn" href="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf" target="_blank" rel="noopener">
+            Open / Download PDF <span class="arrow">↗</span>
           </a>
         </div>
       </div>
 
-      <div class="iframe-wrap" aria-label="Embedded PDF slides">
-        <iframe
-          src="Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf"
-          loading="lazy"
-          title="Presentation Slides - Create Your Own AI Agent with h2oGPTe"
-        ></iframe>
+      <div class="pdf-shell" aria-label="Single-page PDF viewer">
+        <div class="pdf-toolbar">
+          <div class="pdf-left">
+            <button class="link-btn" id="prevPage" type="button">Prev</button>
+            <button class="link-btn" id="nextPage" type="button">Next</button>
+            <span class="pdf-stat" id="pageStat">Page - / -</span>
+          </div>
+          <div class="pdf-right">
+            <button class="link-btn" id="zoomOut" type="button">Zoom -</button>
+            <button class="link-btn" id="zoomIn" type="button">Zoom +</button>
+          </div>
+        </div>
+
+        <div class="pdf-canvas-wrap">
+          <canvas id="pdfCanvas"></canvas>
+        </div>
       </div>
 
       <p class="footer">
@@ -492,24 +491,331 @@
       </p>
     </div>
 
+    <div class="section" id="prompts">
+      <div class="section-head">
+        <div>
+          <h3>Copy-paste Prompts (by slide)</h3>
+          <p class="small">Open each block, copy, paste, run.</p>
+        </div>
+
+        <div class="slides-actions">
+          <!-- Optional: add the prompts PDF to your repo and link it here -->
+          <a class="link-btn" href="holiday_agent_prompts_pack.pdf" target="_blank" rel="noopener">
+            Open prompts PDF <span class="arrow">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <details class="prompt">
+        <summary>
+          Slide 17
+          <span class="prompt-meta">Party plan prompt</span>
+        </summary>
+        <pre class="code" id="p17">I'm planning a holiday party for 15 people with a $300 budget.
+Can you help me create a complete party plan including:
+- Budget breakdown (food, drinks, decorations, entertainment)
+- 3 easy appetizer recipes
+- A shopping list
+- A timeline for party prep
+Make it festive and fun for a Christmas theme!</pre>
+        <button class="link-btn" type="button" data-copy="#p17">Copy</button>
+      </details>
+
+      <details class="prompt">
+        <summary>
+          Slide 18
+          <span class="prompt-meta">Regenerate as JSON</span>
+        </summary>
+        <pre class="code" id="p18">Perfect! Now regenerate that party plan as a JSON object with this schema:
+
+{
+  "party_details": {
+    "theme": "string",
+    "guest_count": number,
+    "total_budget": number
+  },
+  "budget_breakdown": {
+    "food": number,
+    "drinks": number,
+    "decorations": number,
+    "entertainment": number
+  },
+  "recipes": [
+    {
+      "name": "string",
+      "servings": number,
+      "prep_time_minutes": number,
+      "ingredients": ["string"],
+      "instructions": "string"
+    }
+  ],
+  "shopping_list": {
+    "category": ["string"]
+  },
+  "timeline": [
+    {
+      "task": "string",
+      "when": "string",
+      "duration_minutes": number
+    }
+  ]
+}
+
+Output ONLY the JSON, no extra text.</pre>
+        <button class="link-btn" type="button" data-copy="#p18">Copy</button>
+      </details>
+
+      <details class="prompt">
+        <summary>
+          Slide 22
+          <span class="prompt-meta">RAG policy doc</span>
+        </summary>
+        <pre class="code" id="p22">https://triagelogic.com/wp-content/uploads/2018/06/Company-Policy-and-Procedure-June-1.18-V6.0.pdf</pre>
+        <button class="link-btn" type="button" data-copy="#p22">Copy</button>
+      </details>
+
+      <details class="prompt">
+        <summary>
+          Slide 23
+          <span class="prompt-meta">System prompt</span>
+        </summary>
+        <pre class="code" id="p23">You are an AI Agent that must follow these rules:
+1. Always use rag_text to retrieve relevant information from the attached document collection before answering.
+2. Base your answers on the retrieved content and cite alignment or conflicts clearly.
+3. When budgets or constraints are provided, enforce them strictly.
+4. When asked for structured output, return valid JSON matching the schema exactly.
+5. When providing recommendations, include:
+   - gift_name
+   - price
+   - category
+   - reason
+   - policy_alignment
+6. If any requested action violates the policies in the documents, do not proceed; suggest compliant alternatives.
+7. Think step by step and use explicit reasoning.</pre>
+        <button class="link-btn" type="button" data-copy="#p23">Copy</button>
+      </details>
+
+      <details class="prompt">
+        <summary>
+          Slide 24
+          <span class="prompt-meta">Gift request</span>
+        </summary>
+        <pre class="code" id="p24">I need to find appropriate holiday gifts for 3 different people:
+1. A colleague who loves tech gadgets (budget $40-70)
+2. A senior client who wants thoughtful, professional gifts (budget $80-120)
+3. A new team member who enjoys cooking and creative hobbies (budget $25-50)
+Please:
+- Use my company policy guidelines from our RAG collection
+- Follow the budget rules strictly
+- For each person, give 3 gift options
+- Include JSON output with:
+  - gift_name
+  - price
+  - category
+  - reason
+  - policy_alignment
+Make sure recommendations do not violate any company rules, If there are no Gift-Giving Guidelines in this document, please let me know, I will provide to you another updated one.</pre>
+        <button class="link-btn" type="button" data-copy="#p24">Copy</button>
+      </details>
+
+      <details class="prompt">
+        <summary>
+          Slide 25
+          <span class="prompt-meta">Additional policy manual</span>
+        </summary>
+        <pre class="code" id="p25">https://diabengineering.com.au/wp-content/uploads/2019/02/HSE-MAN-001-001-DIAB-Engineering-Policy-Manual-Rev05-All-Policies.pdf</pre>
+        <button class="link-btn" type="button" data-copy="#p25">Copy</button>
+      </details>
+
+      <details class="prompt">
+        <summary>
+          Slide 26
+          <span class="prompt-meta">Build the HTML app</span>
+        </summary>
+        <pre class="code" id="p26">I previously asked you to find appropriate holiday gifts for 3 different
+people with specific budgets and constraints. Now I need you to create an
+interactive HTML Gift Recommendation Dashboard to visualize those
+recommendations.
+
+ORIGINAL GIFT REQUEST:
+I need to find appropriate holiday gifts for 3 different people:
+1. A colleague who loves tech gadgets (budget $40-70)
+2. A senior client who wants thoughtful, professional gifts (budget $80-120)
+3. A new team member who enjoys cooking and creative hobbies (budget $25-50)
+Please:
+- Use my company policy guidelines from our RAG collection
+- Follow the budget rules strictly
+- For each person, give 3 gift options
+- Include JSON output with:
+  - gift_name
+  - price
+  - category
+  - reason
+  - policy_alignment
+Make sure recommendations do not violate any company rules, If there are no
+Gift-Giving Guidelines in this document, please let me know, I will provide
+another updated one.
+
+NOW CREATE AN HTML APP:
+Build a single HTML file with embedded CSS and JavaScript that displays:
+1. Header section (title, subtitle, holiday theme)
+2. Recipient cards (3) with budgets and 3 gift options each
+3. Gift details: name, price, category badge, reason, compliance indicator
+4. Budget tracker with progress bars
+5. Optional filtering/sorting and click-to-expand
+6. Festive but corporate styling, responsive, print-friendly
+7. Summary section and optional export/print
+
+OUTPUT:
+Complete, working HTML file with embedded CSS and JavaScript.</pre>
+        <button class="link-btn" type="button" data-copy="#p26">Copy</button>
+      </details>
+
+      <details class="prompt">
+        <summary>
+          Slide 27
+          <span class="prompt-meta">Selection + email + brand kit</span>
+        </summary>
+        <pre class="code" id="p27">modify the html so that I can click on the option, one choice per column/ individual, so that when the gift is selected the budget used updates with the price of that product/ gift only, and there is a button in addition, where you can click after selection, to forward in an email where you need to inform the email address and the name of the person, object plus description about Happy Holidays, here is you gift card, thank you !
+
+Open the generated email writing to google account directly, and instead of the original colors use my company branding kit that you can find here: https://h2o.ai/company/brand-kit/</pre>
+        <button class="link-btn" type="button" data-copy="#p27">Copy</button>
+      </details>
+
+      <details class="prompt">
+        <summary>
+          Slide 29
+          <span class="prompt-meta">Quiz link</span>
+        </summary>
+        <pre class="code" id="p29">https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23</pre>
+        <button class="link-btn" type="button" data-copy="#p29">Copy</button>
+      </details>
+    </div>
+
   </div>
 
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.js"></script>
   <script>
-    (function () {
-      if (window.location.hash === "#slides") {
-        const el = document.getElementById("slides");
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    })();
-
-    document.querySelectorAll(".btn, .link-btn, .meta a").forEach(function (btn) {
+    // ---------- Tap feedback ----------
+    document.querySelectorAll(".btn, .link-btn, .badge").forEach(function (btn) {
       btn.addEventListener("pointerdown", function () {
         btn.style.transform = "translateY(0px) scale(0.99)";
-        setTimeout(function () {
-          btn.style.transform = "";
-        }, 120);
+        setTimeout(function () { btn.style.transform = ""; }, 120);
       });
     });
+
+    // ---------- Copy buttons ----------
+    document.querySelectorAll("[data-copy]").forEach(function (b) {
+      b.addEventListener("click", async function () {
+        const sel = b.getAttribute("data-copy");
+        const el = document.querySelector(sel);
+        if (!el) return;
+        try{
+          await navigator.clipboard.writeText(el.textContent);
+          const old = b.textContent;
+          b.textContent = "Copied";
+          setTimeout(function(){ b.textContent = old; }, 900);
+        }catch(e){
+          // fallback
+          const ta = document.createElement("textarea");
+          ta.value = el.textContent;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+        }
+      });
+    });
+
+    // ---------- PDF.js single-page viewer ----------
+    (function () {
+      const url = "Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf";
+      const canvas = document.getElementById("pdfCanvas");
+      const ctx = canvas.getContext("2d");
+
+      let pdfDoc = null;
+      let pageNum = 1;
+      let pageCount = 0;
+      let scale = 1.2;
+      let rendering = false;
+      let pendingPage = null;
+
+      const pageStat = document.getElementById("pageStat");
+      const prevBtn = document.getElementById("prevPage");
+      const nextBtn = document.getElementById("nextPage");
+      const zoomOut = document.getElementById("zoomOut");
+      const zoomIn = document.getElementById("zoomIn");
+
+      function setStat() {
+        pageStat.textContent = "Page " + pageNum + " / " + pageCount;
+      }
+
+      async function renderPage(num) {
+        rendering = true;
+        const page = await pdfDoc.getPage(num);
+
+        const viewport = page.getViewport({ scale });
+        canvas.width = Math.floor(viewport.width);
+        canvas.height = Math.floor(viewport.height);
+
+        const renderContext = { canvasContext: ctx, viewport };
+        await page.render(renderContext).promise;
+
+        rendering = false;
+        setStat();
+
+        if (pendingPage !== null) {
+          const p = pendingPage;
+          pendingPage = null;
+          renderPage(p);
+        }
+      }
+
+      function queueRender(num) {
+        if (rendering) {
+          pendingPage = num;
+        } else {
+          renderPage(num);
+        }
+      }
+
+      prevBtn.addEventListener("click", function () {
+        if (!pdfDoc || pageNum <= 1) return;
+        pageNum--;
+        queueRender(pageNum);
+      });
+
+      nextBtn.addEventListener("click", function () {
+        if (!pdfDoc || pageNum >= pageCount) return;
+        pageNum++;
+        queueRender(pageNum);
+      });
+
+      zoomOut.addEventListener("click", function () {
+        if (!pdfDoc) return;
+        scale = Math.max(0.6, +(scale - 0.1).toFixed(2));
+        queueRender(pageNum);
+      });
+
+      zoomIn.addEventListener("click", function () {
+        if (!pdfDoc) return;
+        scale = Math.min(2.2, +(scale + 0.1).toFixed(2));
+        queueRender(pageNum);
+      });
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.worker.min.js";
+
+      pdfjsLib.getDocument(url).promise.then(function (pdf) {
+        pdfDoc = pdf;
+        pageCount = pdf.numPages;
+        setStat();
+        renderPage(pageNum);
+      }).catch(function () {
+        pageStat.textContent = "PDF failed to load. Use the Open / Download PDF link.";
+      });
+    })();
   </script>
 </body>
 </html>
