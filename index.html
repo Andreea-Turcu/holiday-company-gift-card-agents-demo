@@ -13,14 +13,16 @@
       --muted: rgba(255,255,255,0.70);
       --shadow: 0 18px 45px rgba(0,0,0,0.35);
 
+      /* Brand-leaning accents */
       --accent: #ffd200;
       --accent-2: #00d3ff;
+
       --btn: rgba(255,255,255,0.10);
       --btn-hover: rgba(255,255,255,0.16);
       --focus: rgba(255,210,0,0.55);
 
       --sys-accent: rgba(0,211,255,0.22);
-      --sys-border: rgba(0,211,255,0.30);
+      --sys-border: rgba(0,211,255,0.34);
     }
 
     * { box-sizing: border-box; }
@@ -66,6 +68,13 @@
       color: var(--muted);
       user-select: none;
       text-decoration: none;
+      transition: border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+    .badge:hover{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.22);
+      transform: translateY(-1px);
+      color: var(--text);
     }
 
     .dot{
@@ -184,7 +193,7 @@
       text-decoration: none;
       font-weight: 650;
       letter-spacing: 0.01em;
-      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease, box-shadow .16s ease;
       outline: none;
       cursor: pointer;
     }
@@ -193,6 +202,7 @@
       background: var(--btn-hover);
       border-color: rgba(255,255,255,0.26);
       transform: translateY(-1px);
+      box-shadow: 0 0 0 1px rgba(255,210,0,0.18) inset;
     }
 
     .btn:focus-visible{
@@ -259,16 +269,18 @@
       background: rgba(255,255,255,0.06);
       color: var(--text);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 650;
       font-size: 13px;
-      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease, box-shadow .16s ease;
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .link-btn:hover{
       transform: translateY(-1px);
       background: rgba(255,255,255,0.09);
       border-color: rgba(255,255,255,0.24);
+      box-shadow: 0 0 0 1px rgba(0,211,255,0.14) inset;
     }
 
     /* Centered CTA below the version cards */
@@ -283,12 +295,18 @@
       gap: 12px;
       padding: 12px 14px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.06);
-      font-weight: 700;
+      border: 1px solid rgba(255,210,0,0.50);
+      background:
+        linear-gradient(180deg, rgba(255,210,0,0.18), rgba(255,255,255,0.06));
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.22);
     }
     .cta-wide:hover{
-      background: rgba(255,255,255,0.10);
+      background:
+        linear-gradient(180deg, rgba(255,210,0,0.26), rgba(255,255,255,0.08));
+      border-color: rgba(255,210,0,0.68);
+      box-shadow: 0 0 0 1px rgba(255,210,0,0.22) inset, 0 16px 40px rgba(0,0,0,0.22);
     }
 
     .disclaimer{
@@ -315,6 +333,29 @@
       aspect-ratio: 16/9;
       border: 0;
       display: block;
+    }
+
+    /* Webinar toolbar layout */
+    .webinar-actions{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .webinar-left{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .webinar-right{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     /* PDF.js single-page viewer */
@@ -348,17 +389,15 @@
     .pdf-canvas-wrap{
       display: grid;
       place-items: center;
-      padding: 10px 16px 16px;
-      height: 860px;
+      padding: 16px;
+      min-height: 820px;
     }
     @media (max-width: 720px){
-      .pdf-canvas-wrap{ height: 720px; }
+      .pdf-canvas-wrap{ min-height: 680px; }
     }
     canvas#pdfCanvas{
       max-width: 100%;
-      max-height: 100%;
       height: auto;
-      width: auto;
       border-radius: 12px;
       background: rgba(255,255,255,0.02);
       box-shadow: 0 18px 50px rgba(0,0,0,0.25);
@@ -416,22 +455,20 @@
       flex-wrap: wrap;
       margin-top: 10px;
     }
-    .doc-link{
-      color: rgba(255,255,255,0.88);
-      text-decoration: underline;
-    }
-    .doc-link:hover{
-      color: var(--text);
-    }
 
     /* System prompt styling (Slide 23) */
     details.prompt.system{
       border-color: var(--sys-border);
-      background: linear-gradient(180deg, rgba(0,211,255,0.08), rgba(255,255,255,0.03));
+      background: linear-gradient(180deg, rgba(0,211,255,0.14), rgba(255,255,255,0.03));
+      box-shadow: 0 0 0 1px rgba(0,211,255,0.10) inset, 0 14px 38px rgba(0,0,0,0.22);
+    }
+    details.prompt.system summary{
+      color: rgba(255,255,255,0.98);
     }
     details.prompt.system pre.code{
-      border-color: rgba(0,211,255,0.22);
-      background: rgba(0,211,255,0.08);
+      border-color: rgba(0,211,255,0.28);
+      background: rgba(0,211,255,0.12);
+      box-shadow: 0 0 0 1px rgba(0,211,255,0.10) inset;
     }
 
     .footer{
@@ -465,6 +502,7 @@
       <p class="subtitle">
         Choose a version of the interactive dashboard. Both demonstrate a policy-aware workflow for generating
         holiday gift recommendations with strict budget constraints, then visualizing results in a single-page app.
+        Both versions were created during the webinar using the freemium version of Enterprise h2oGPTe.
       </p>
 
       <div class="grid">
@@ -494,8 +532,8 @@
       </div>
 
       <div class="cta-row">
-        <a class="link-btn cta-wide" href="https://h2ogpte.genai.h2o.ai/" target="_blank" rel="noopener">
-          Launch H2O GPT-E (Freemium) <span class="arrow">↗</span>
+        <a class="link-btn cta-wide" href="https://h2ogpte.genai.h2o.ai" target="_blank" rel="noopener">
+          Launch Enterprise h2oGPTe (Freemium) <span class="arrow">↗</span>
         </a>
       </div>
 
@@ -512,16 +550,21 @@
           <p class="small">Watch the session, then jump into the slides, course, or quiz.</p>
         </div>
 
-        <div class="slides-actions">
-          <a class="link-btn" href="https://h2o.ai/university/courses/build-practical-ai-agents-with-h2ogpte/" target="_blank" rel="noopener">
-            Open course page <span class="arrow">↗</span>
-          </a>
-          <a class="link-btn" href="https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23" target="_blank" rel="noopener">
-            Open quiz <span class="arrow">↗</span>
-          </a>
-          <button class="link-btn" id="jumpDemo" type="button">
-            Jump ahead to the demo <span class="arrow">↗</span>
-          </button>
+        <div class="webinar-actions">
+          <div class="webinar-left">
+            <button class="link-btn" id="jumpDemo" type="button">
+              Jump ahead to the demo <span class="arrow">↗</span>
+            </button>
+          </div>
+
+          <div class="webinar-right">
+            <a class="link-btn" href="https://h2o.ai/university/courses/build-practical-ai-agents-with-h2ogpte/" target="_blank" rel="noopener">
+              Open course page <span class="arrow">↗</span>
+            </a>
+            <a class="link-btn" href="https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23" target="_blank" rel="noopener">
+              Open quiz <span class="arrow">↗</span>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -929,7 +972,7 @@ Open the generated email writing to google account directly, and instead of the 
       });
     })();
 
-    // PDF.js single-page viewer (fit-to-height)
+    // PDF.js single-page viewer (fit-to-width), start on page 5
     (function () {
       const relUrl = "Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf";
       const pdfUrl = new URL(relUrl, window.location.href).href;
@@ -944,9 +987,10 @@ Open the generated email writing to google account directly, and instead of the 
       const pdfError = document.getElementById("pdfError");
 
       let pdfDoc = null;
-      let pageNum = 1;
+      let pageNum = 5;
       let pageCount = 0;
 
+      let fitScale = 1.0;
       let rendering = false;
       let pendingPage = null;
 
@@ -957,11 +1001,11 @@ Open the generated email writing to google account directly, and instead of the 
         else pageStat.textContent = "Page " + pageNum + " / " + pageCount;
       }
 
-      async function computeFitScaleHeight(page) {
+      async function computeFitScale(page) {
         const base = page.getViewport({ scale: 1 });
-        const availH = Math.max(420, wrap.clientHeight - 18);
-        const s = availH / base.height;
-        return clamp(s, 0.55, 2.4);
+        const availW = Math.max(320, wrap.clientWidth - 32);
+        const s = availW / base.width;
+        return clamp(s, 0.7, 2.2);
       }
 
       async function renderPage(num) {
@@ -969,8 +1013,9 @@ Open the generated email writing to google account directly, and instead of the 
         pdfError.style.display = "none";
 
         const page = await pdfDoc.getPage(num);
-        const scale = await computeFitScaleHeight(page);
-        const viewport = page.getViewport({ scale });
+        fitScale = await computeFitScale(page);
+
+        const viewport = page.getViewport({ scale: fitScale });
 
         const dpr = window.devicePixelRatio || 1;
         canvas.width = Math.floor(viewport.width * dpr);
@@ -1029,6 +1074,10 @@ Open the generated email writing to google account directly, and instead of the 
       pdfjsLib.getDocument({ url: pdfUrl }).promise.then(function (pdf) {
         pdfDoc = pdf;
         pageCount = pdf.numPages;
+
+        if (pageNum < 1) pageNum = 1;
+        if (pageNum > pageCount) pageNum = 1;
+
         setStat();
         renderPage(pageNum);
       }).catch(function () {
