@@ -18,6 +18,9 @@
       --btn: rgba(255,255,255,0.10);
       --btn-hover: rgba(255,255,255,0.16);
       --focus: rgba(255,210,0,0.55);
+
+      --sys-accent: rgba(0,211,255,0.22);
+      --sys-border: rgba(0,211,255,0.30);
     }
 
     * { box-sizing: border-box; }
@@ -268,6 +271,36 @@
       border-color: rgba(255,255,255,0.24);
     }
 
+    /* Centered CTA below the version cards */
+    .cta-row{
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+    }
+    .cta-wide{
+      width: min(720px, 100%);
+      justify-content: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      font-weight: 700;
+    }
+    .cta-wide:hover{
+      background: rgba(255,255,255,0.10);
+    }
+
+    .disclaimer{
+      margin: 12px auto 0;
+      max-width: 90ch;
+      color: rgba(255,255,255,0.62);
+      font-size: 12.5px;
+      line-height: 1.5;
+      font-style: italic;
+      text-align: center;
+    }
+
     /* Video */
     .video-wrap{
       margin-top: 10px;
@@ -301,7 +334,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.10);
       background: rgba(255,255,255,0.04);
     }
-    .pdf-left, .pdf-right{
+    .pdf-left{
       display: flex;
       align-items: center;
       gap: 8px;
@@ -315,15 +348,17 @@
     .pdf-canvas-wrap{
       display: grid;
       place-items: center;
-      padding: 16px;
-      min-height: 820px;
+      padding: 10px 16px 16px;
+      height: 860px;
     }
     @media (max-width: 720px){
-      .pdf-canvas-wrap{ min-height: 680px; }
+      .pdf-canvas-wrap{ height: 720px; }
     }
     canvas#pdfCanvas{
       max-width: 100%;
+      max-height: 100%;
       height: auto;
+      width: auto;
       border-radius: 12px;
       background: rgba(255,255,255,0.02);
       box-shadow: 0 18px 50px rgba(0,0,0,0.25);
@@ -374,6 +409,29 @@
       color: rgba(255,255,255,0.88);
       font-size: 12.5px;
       line-height: 1.45;
+    }
+    .prompt-actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .doc-link{
+      color: rgba(255,255,255,0.88);
+      text-decoration: underline;
+    }
+    .doc-link:hover{
+      color: var(--text);
+    }
+
+    /* System prompt styling (Slide 23) */
+    details.prompt.system{
+      border-color: var(--sys-border);
+      background: linear-gradient(180deg, rgba(0,211,255,0.08), rgba(255,255,255,0.03));
+    }
+    details.prompt.system pre.code{
+      border-color: rgba(0,211,255,0.22);
+      background: rgba(0,211,255,0.08);
     }
 
     .footer{
@@ -434,6 +492,17 @@
           </a>
         </div>
       </div>
+
+      <div class="cta-row">
+        <a class="link-btn cta-wide" href="https://h2ogpte.genai.h2o.ai/" target="_blank" rel="noopener">
+          Launch H2O GPT-E (Freemium) <span class="arrow">↗</span>
+        </a>
+      </div>
+
+      <div class="disclaimer">
+        Compliance note: This page and demo are for educational purposes. Do not include confidential or sensitive
+        data when using freemium environments. Use approved enterprise deployments for real policy workflows.
+      </div>
     </div>
 
     <div class="section" id="webinar">
@@ -450,11 +519,15 @@
           <a class="link-btn" href="https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23" target="_blank" rel="noopener">
             Open quiz <span class="arrow">↗</span>
           </a>
+          <button class="link-btn" id="jumpDemo" type="button">
+            Jump ahead to the demo <span class="arrow">↗</span>
+          </button>
         </div>
       </div>
 
       <div class="video-wrap" aria-label="Embedded webinar video">
         <iframe
+          id="webinarPlayer"
           src="https://www.youtube.com/embed/RCsjmUjXLcw"
           title="Webinar recording"
           loading="lazy"
@@ -486,10 +559,6 @@
             <button class="link-btn" id="nextPage" type="button">Next</button>
             <span class="pdf-stat" id="pageStat">Loading…</span>
           </div>
-          <div class="pdf-right">
-            <button class="link-btn" id="zoomOut" type="button">Zoom -</button>
-            <button class="link-btn" id="zoomIn" type="button">Zoom +</button>
-          </div>
         </div>
 
         <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
@@ -500,18 +569,13 @@
           PDF failed to load. Confirm the PDF filename matches exactly (including capitalization) and is in the same folder as this page.
         </div>
       </div>
-
-      <p class="footer">
-        Compliance note: This page and demo are for educational purposes. Do not include confidential or sensitive
-        data when using freemium environments. Use approved enterprise deployments for real policy workflows.
-      </p>
     </div>
 
     <div class="section" id="prompts">
       <div class="section-head">
         <div>
           <h3>Copy-paste Prompts (by slide)</h3>
-          <p class="small">Open each block, copy, paste, run. You can also download them as a PDF.</p>
+          <p class="small">Open each block, copy, paste, run. Links open in a new tab.</p>
         </div>
 
         <div class="slides-actions">
@@ -530,7 +594,9 @@ Can you help me create a complete party plan including:
 - A shopping list
 - A timeline for party prep
 Make it festive and fun for a Christmas theme!</pre>
-        <button class="link-btn" type="button" data-copy="#p17">Copy</button>
+        <div class="prompt-actions">
+          <button class="link-btn" type="button" data-copy="#p17">Copy</button>
+        </div>
       </details>
 
       <details class="prompt">
@@ -571,16 +637,25 @@ Make it festive and fun for a Christmas theme!</pre>
 }
 
 Output ONLY the JSON, no extra text.</pre>
-        <button class="link-btn" type="button" data-copy="#p18">Copy</button>
+        <div class="prompt-actions">
+          <button class="link-btn" type="button" data-copy="#p18">Copy</button>
+        </div>
       </details>
 
       <details class="prompt">
         <summary>Slide 22 <span class="prompt-meta">RAG policy doc</span></summary>
         <pre class="code" id="p22">https://triagelogic.com/wp-content/uploads/2018/06/Company-Policy-and-Procedure-June-1.18-V6.0.pdf</pre>
-        <button class="link-btn" type="button" data-copy="#p22">Copy</button>
+        <div class="prompt-actions">
+          <a class="link-btn" href="https://triagelogic.com/wp-content/uploads/2018/06/Company-Policy-and-Procedure-June-1.18-V6.0.pdf" target="_blank" rel="noopener">
+            Open link <span class="arrow">↗</span>
+          </a>
+          <button class="link-btn" type="button" data-download="https://triagelogic.com/wp-content/uploads/2018/06/Company-Policy-and-Procedure-June-1.18-V6.0.pdf" data-filename="company_policy_triagelogic.pdf">
+            Download PDF <span class="arrow">↗</span>
+          </button>
+        </div>
       </details>
 
-      <details class="prompt">
+      <details class="prompt system">
         <summary>Slide 23 <span class="prompt-meta">System prompt</span></summary>
         <pre class="code" id="p23">You are an AI Agent that must follow these rules:
 1. Always use rag_text to retrieve relevant information from the attached document collection before answering.
@@ -595,7 +670,9 @@ Output ONLY the JSON, no extra text.</pre>
    - policy_alignment
 6. If any requested action violates the policies in the documents, do not proceed; suggest compliant alternatives.
 7. Think step by step and use explicit reasoning.</pre>
-        <button class="link-btn" type="button" data-copy="#p23">Copy</button>
+        <div class="prompt-actions">
+          <button class="link-btn" type="button" data-copy="#p23">Copy</button>
+        </div>
       </details>
 
       <details class="prompt">
@@ -615,13 +692,22 @@ Please:
   - reason
   - policy_alignment
 Make sure recommendations do not violate any company rules, If there are no Gift-Giving Guidelines in this document, please let me know, I will provide to you another updated one.</pre>
-        <button class="link-btn" type="button" data-copy="#p24">Copy</button>
+        <div class="prompt-actions">
+          <button class="link-btn" type="button" data-copy="#p24">Copy</button>
+        </div>
       </details>
 
       <details class="prompt">
         <summary>Slide 25 <span class="prompt-meta">Additional policy manual</span></summary>
         <pre class="code" id="p25">https://diabengineering.com.au/wp-content/uploads/2019/02/HSE-MAN-001-001-DIAB-Engineering-Policy-Manual-Rev05-All-Policies.pdf</pre>
-        <button class="link-btn" type="button" data-copy="#p25">Copy</button>
+        <div class="prompt-actions">
+          <a class="link-btn" href="https://diabengineering.com.au/wp-content/uploads/2019/02/HSE-MAN-001-001-DIAB-Engineering-Policy-Manual-Rev05-All-Policies.pdf" target="_blank" rel="noopener">
+            Open link <span class="arrow">↗</span>
+          </a>
+          <button class="link-btn" type="button" data-download="https://diabengineering.com.au/wp-content/uploads/2019/02/HSE-MAN-001-001-DIAB-Engineering-Policy-Manual-Rev05-All-Policies.pdf" data-filename="policy_manual_diabengineering.pdf">
+            Download PDF <span class="arrow">↗</span>
+          </button>
+        </div>
       </details>
 
       <details class="prompt">
@@ -662,7 +748,9 @@ Build a single HTML file with embedded CSS and JavaScript that displays:
 
 OUTPUT:
 Complete, working HTML file with embedded CSS and JavaScript.</pre>
-        <button class="link-btn" type="button" data-copy="#p26">Copy</button>
+        <div class="prompt-actions">
+          <button class="link-btn" type="button" data-copy="#p26">Copy</button>
+        </div>
       </details>
 
       <details class="prompt">
@@ -670,19 +758,25 @@ Complete, working HTML file with embedded CSS and JavaScript.</pre>
         <pre class="code" id="p27">modify the html so that I can click on the option, one choice per column/ individual, so that when the gift is selected the budget used updates with the price of that product/ gift only, and there is a button in addition, where you can click after selection, to forward in an email where you need to inform the email address and the name of the person, object plus description about Happy Holidays, here is you gift card, thank you !
 
 Open the generated email writing to google account directly, and instead of the original colors use my company branding kit that you can find here: https://h2o.ai/company/brand-kit/</pre>
-        <button class="link-btn" type="button" data-copy="#p27">Copy</button>
+        <div class="prompt-actions">
+          <button class="link-btn" type="button" data-copy="#p27">Copy</button>
+        </div>
       </details>
 
       <details class="prompt">
         <summary>Slide 29 <span class="prompt-meta">Quiz link</span></summary>
         <pre class="code" id="p29">https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23</pre>
-        <button class="link-btn" type="button" data-copy="#p29">Copy</button>
+        <div class="prompt-actions">
+          <a class="link-btn" href="https://www.classmarker.com/online-test/start/?quiz=6kk693b055cdcb23" target="_blank" rel="noopener">
+            Open quiz <span class="arrow">↗</span>
+          </a>
+        </div>
       </details>
     </div>
 
   </div>
 
-  <!-- PDF.js (legacy build to ensure window.pdfjsLib exists on GitHub Pages) -->
+  <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <!-- jsPDF (for prompts download) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -695,6 +789,24 @@ Open the generated email writing to google account directly, and instead of the 
         setTimeout(function () { btn.style.transform = ""; }, 120);
       });
     });
+
+    // Jump ahead to demo (22:07) inside the same embed
+    (function () {
+      const jumpBtn = document.getElementById("jumpDemo");
+      const player = document.getElementById("webinarPlayer");
+      if (!jumpBtn || !player) return;
+
+      const base = "https://www.youtube.com/embed/RCsjmUjXLcw";
+      const startSeconds = 22 * 60 + 7;
+
+      jumpBtn.addEventListener("click", function () {
+        const u = new URL(base);
+        u.searchParams.set("start", String(startSeconds));
+        u.searchParams.set("autoplay", "1");
+        player.setAttribute("src", u.toString());
+        player.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    })();
 
     // Copy buttons
     document.querySelectorAll("[data-copy]").forEach(function (b) {
@@ -714,6 +826,31 @@ Open the generated email writing to google account directly, and instead of the 
           ta.select();
           document.execCommand("copy");
           ta.remove();
+        }
+      });
+    });
+
+    // Download external PDFs (Slides 22 and 25)
+    document.querySelectorAll("[data-download]").forEach(function (b) {
+      b.addEventListener("click", async function () {
+        const url = b.getAttribute("data-download");
+        const filename = b.getAttribute("data-filename") || "document.pdf";
+        if (!url) return;
+
+        try{
+          const res = await fetch(url, { mode: "cors" });
+          if (!res.ok) throw new Error("Fetch failed");
+          const blob = await res.blob();
+          const a = document.createElement("a");
+          const objUrl = URL.createObjectURL(blob);
+          a.href = objUrl;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(objUrl);
+        }catch(e){
+          window.open(url, "_blank", "noopener");
         }
       });
     });
@@ -792,7 +929,7 @@ Open the generated email writing to google account directly, and instead of the 
       });
     })();
 
-    // PDF.js single-page viewer (fit-to-width default)
+    // PDF.js single-page viewer (fit-to-height)
     (function () {
       const relUrl = "Presentation%20Slides%20-%20Create%20Your%20Own%20AI%20Agent%20with%20h2oGPTe.pdf";
       const pdfUrl = new URL(relUrl, window.location.href).href;
@@ -804,16 +941,12 @@ Open the generated email writing to google account directly, and instead of the 
       const pageStat = document.getElementById("pageStat");
       const prevBtn = document.getElementById("prevPage");
       const nextBtn = document.getElementById("nextPage");
-      const zoomOut = document.getElementById("zoomOut");
-      const zoomIn = document.getElementById("zoomIn");
       const pdfError = document.getElementById("pdfError");
 
       let pdfDoc = null;
       let pageNum = 1;
       let pageCount = 0;
 
-      let fitScale = 1.0;
-      let userZoom = 1.0;
       let rendering = false;
       let pendingPage = null;
 
@@ -824,11 +957,11 @@ Open the generated email writing to google account directly, and instead of the 
         else pageStat.textContent = "Page " + pageNum + " / " + pageCount;
       }
 
-      async function computeFitScale(page) {
+      async function computeFitScaleHeight(page) {
         const base = page.getViewport({ scale: 1 });
-        const availW = Math.max(320, wrap.clientWidth - 32);
-        const s = availW / base.width;
-        return clamp(s, 0.7, 2.2);
+        const availH = Math.max(420, wrap.clientHeight - 18);
+        const s = availH / base.height;
+        return clamp(s, 0.55, 2.4);
       }
 
       async function renderPage(num) {
@@ -836,9 +969,7 @@ Open the generated email writing to google account directly, and instead of the 
         pdfError.style.display = "none";
 
         const page = await pdfDoc.getPage(num);
-        fitScale = await computeFitScale(page);
-
-        const scale = clamp(fitScale * userZoom, 0.6, 3.0);
+        const scale = await computeFitScaleHeight(page);
         const viewport = page.getViewport({ scale });
 
         const dpr = window.devicePixelRatio || 1;
@@ -848,7 +979,6 @@ Open the generated email writing to google account directly, and instead of the 
         canvas.style.height = Math.floor(viewport.height) + "px";
 
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
         await page.render({ canvasContext: ctx, viewport }).promise;
 
         rendering = false;
@@ -875,18 +1005,6 @@ Open the generated email writing to google account directly, and instead of the 
       nextBtn.addEventListener("click", function () {
         if (!pdfDoc || pageNum >= pageCount) return;
         pageNum++;
-        queueRender(pageNum);
-      });
-
-      zoomOut.addEventListener("click", function () {
-        if (!pdfDoc) return;
-        userZoom = clamp(+(userZoom - 0.1).toFixed(2), 0.6, 2.0);
-        queueRender(pageNum);
-      });
-
-      zoomIn.addEventListener("click", function () {
-        if (!pdfDoc) return;
-        userZoom = clamp(+(userZoom + 0.1).toFixed(2), 0.6, 2.0);
         queueRender(pageNum);
       });
 
